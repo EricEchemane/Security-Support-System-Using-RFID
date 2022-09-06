@@ -4,7 +4,8 @@
   "description": "Security Support System Using RFID",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "author": "Eric Echemane",
   "license": "ISC",
@@ -18,5 +19,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
