@@ -1,0 +1,6 @@
+{
+  "files.exclude": {
+    "system\\.next": true,
+    "system\\node_modules": true
+  }
+}
