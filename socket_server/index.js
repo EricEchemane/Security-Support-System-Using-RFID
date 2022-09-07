@@ -15,7 +15,6 @@ io.on('connect', function (socket) {
     socket.on('time:in', uid => {
         const timeIn = new Date();
         console.log(`User ${uid} time in: ${timeIn}`);
+        socket.emit('time:in', { uid, timeIn });
     });
 });
-
-
