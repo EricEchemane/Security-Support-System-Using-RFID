@@ -8,7 +8,11 @@ server.listen(PORT, function () {
     console.log(`🚀 App listening on port ${PORT}`);
 });
 
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*',
+    }
+});
 
 io.on('connection', function (socket) {
     console.log('Client connected with id: ' + socket.id);
