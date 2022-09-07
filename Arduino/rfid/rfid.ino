@@ -30,15 +30,6 @@ void loop() {
   delay(500);
 }
 
-// void controlled(const char* message, size_t length){
-// //  USER_SERIAL.println(message);
-
-
-//   DynamicJsonDocument doc(1024);
-//   deserializeJson(doc, message);
-  
-// }
-
 void searchWiFi(){
   int numberOfNetwork = WiFi.scanNetworks();
   USER_SERIAL.println("----");

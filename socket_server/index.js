@@ -23,4 +23,8 @@ io.on('connection', function (socket) {
 
         socket.emit('time:in', { uid, timeIn });
     });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected with id: ' + socket.id);
+    });
 });
