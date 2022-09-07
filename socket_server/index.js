@@ -12,8 +12,9 @@ const io = require('socket.io')(server);
 
 io.on('connect', function (socket) {
 
-    socket.on('message', function (data) {
-        console.log(data);
+    socket.on('time:in', uid => {
+        const timeIn = new Date();
+        console.log(`User ${uid} time in: ${timeIn}`);
     });
 });
 
