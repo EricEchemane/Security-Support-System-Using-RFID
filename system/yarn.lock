@@ -422,7 +422,14 @@
   "resolved" "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.10.4.tgz"
   "version" "5.10.4"
 
-"@mui/material@^5.10.4":
+"@mui/icons-material@^5.10.3":
+  "integrity" "sha512-o0kbUlsWCBtCE0wP33cGKbyryCh7kpm2EECYMPDmWrLhbA+HUODXIdhiTFS26szp2xXo9HY1lEx0ufeJ+tddYw=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.10.3.tgz"
+  "version" "5.10.3"
+  dependencies:
+    "@babel/runtime" "^7.18.9"
+
+"@mui/material@^5.0.0", "@mui/material@^5.10.4":
   "integrity" "sha512-uwupjunU3p8XxZU4f2zF1GYlwB9GDxW1H05BMDPSh0u+37yLxuQDMMxwQQPUo9jSA5Y22/eR4Y71ScxKU89QHg=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.10.4.tgz"
   "version" "5.10.4"
