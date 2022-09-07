@@ -10,11 +10,13 @@ server.listen(PORT, function () {
 
 const io = require('socket.io')(server);
 
-io.on('connect', function (socket) {
+io.on('connection', function (socket) {
+    console.log('Client connected with id: ' + socket.id);
 
     socket.on('time:in', uid => {
         const timeIn = new Date();
         console.log(`User ${uid} time in: ${timeIn}`);
+
         socket.emit('time:in', { uid, timeIn });
     });
 });

@@ -21,12 +21,12 @@ void setup() {
   searchWiFi();
   connectWiFi();
   
-  webSocket.begin("192.168.1.4", 3000);
+  webSocket.begin("192.168.1.4", 4000);
 }
 
 void loop() {
   webSocket.loop();
-  webSocket.emit("message", "\"this is a plain string\"");
+  webSocket.emit("time:in", "\"19126222\"");
   delay(500);
 }
 
