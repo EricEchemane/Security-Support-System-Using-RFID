@@ -1,9 +1,25 @@
 {
+  "name": "socket_server",
+  "version": "1.0.0",
+  "description": "socket server with RFID attendance security system",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "RFID",
+    "socket.io",
+    "IOT"
+  ],
+  "author": "Eric Echemane",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^4.5.2"
   },
-  "scripts": {
-    "start": "node index.js"
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
