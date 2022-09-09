@@ -52,6 +52,7 @@ void setupWiFi() {
   Serial.println("\nConnecting...");
 
   WiFi.mode(WIFI_AP);
+  
   WiFi.begin(SSID, PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
@@ -80,28 +81,30 @@ void loop() {
   socketIO.loop();
 
   // // creat JSON message for Socket.IO (event)
-  // DynamicJsonDocument doc(1024);
-  // JsonArray array = doc.to<JsonArray>();
+  DynamicJsonDocument doc(1024);
+  JsonArray array = doc.to<JsonArray>();
 
   // // add evnet name
   // // Hint: socket.on('event_name', ....
-  // array.add("time:in");
+  array.add("time:in");
 
   // // add payload (parameters) for the event
-  // JsonObject param1 = array.createNestedObject();
-  // param1["uid"] = "19126222";
+  JsonObject param1 = array.createNestedObject();
+  param1["uid"] = "19126222";
 
   // // JSON to String (serializion)
-  // String output;
-  // serializeJson(doc, output);
+  String output;
+  serializeJson(doc, output);
 
   // // Send event
-  // socketIO.sendEVENT(output);
+  socketIO.sendEVENT(output);
 
   // // Print JSON for debugging
   // Serial.println(output);
 
-  // delay(500);
+  
+
+  // delay(1000);
 }
 
 

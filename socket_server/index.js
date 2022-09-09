@@ -18,7 +18,7 @@ io.on('connection', socket => {
     });
 
     socket.on('time:in', data => {
-        console.log('time:in', data);
+        socket.broadcast.emit('time:in', { time: new Date(), uid: data.uid });
     });
 });
 

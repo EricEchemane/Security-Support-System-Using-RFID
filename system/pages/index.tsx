@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
+
+let socket: Socket | null;
 
 export default function Home() {
 
   useEffect(() => {
-    const socket = io("http://localhost:4000", {
+    if (socket) return;
+
+    socket = io("http://localhost:4000", {
       transports: ['websocket']
     });
 
     socket.on('connect', () => {
       console.log('connected');
+    });
 
+    socket.on("time:in", data => {
+      console.log(data);
     });
   }, []);
 
