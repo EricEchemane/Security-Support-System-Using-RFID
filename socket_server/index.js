@@ -6,7 +6,9 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, { cors: { origin: '*' } });
+const io = new Server(httpServer, {
+    cors: { origin: '*' }
+});
 
 io.on('connection', socket => {
     console.log('New Connection from', socket.id);
@@ -16,7 +18,7 @@ io.on('connection', socket => {
     });
 
     socket.on('time:in', data => {
-        console.log(data);
+        console.log('time:in', data);
     });
 });
 

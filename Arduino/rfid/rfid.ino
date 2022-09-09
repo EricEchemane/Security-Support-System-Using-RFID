@@ -1,59 +1,109 @@
-#include <SocketIoClient.h>
-#include <ArduinoJson.h>
-#include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <ArduinoJson.h>       // https://arduinojson.org/
+#include <WebSocketsClient.h>  // download and install from https://github.com/Links2004/arduinoWebSockets
+#include <SocketIOclient.h>
 
-#define USER_SERIAL Serial
+#define SSID "ZTE_2.4G_zncMNd"
+#define PASSWORD "iLyCfbAc"
+#define SERVER "192.168.1.4"
 
 
-const char* ssid = "ZTE_2.4G_zncMNd";
-const char* pass = "iLyCfbAc";
+SocketIOclient socketIO;
 
 
-SocketIoClient webSocket;
+void messageHandler(uint8_t* payload) {
+  StaticJsonDocument<64> doc;
+
+  DeserializationError error = deserializeJson(doc, payload);
+
+  if (error) {
+    Serial.println(error.f_str());
+    return;
+  }
+
+  String messageKey = doc[0];
+  bool value = doc[1];
+
+  if (messageKey == "time:in") {
+    Serial.println("Someone is emitting time:in event!");
+  }
+}
+
+void socketIOEvent(socketIOmessageType_t type, uint8_t* payload, size_t length) {
+  switch (type) {
+    case sIOtype_DISCONNECT:
+      Serial.println("Disconnected!");
+      break;
+
+    case sIOtype_CONNECT:
+      Serial.printf("Connected to url: %s%s\n", SERVER, payload);
+
+      // join default namespace (no auto join in Socket.IO V3)
+      socketIO.send(sIOtype_CONNECT, "/");
+      break;
+
+    case sIOtype_EVENT:
+      messageHandler(payload);
+      break;
+  }
+}
+
+void setupWiFi() {
+  Serial.println("\nConnecting...");
+
+  WiFi.mode(WIFI_AP);
+  WiFi.begin(SSID, PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+
+  Serial.println("\nConnected : ");
+  Serial.println(WiFi.localIP());
+}
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
 
+  Serial.begin(9600);
 
-  USER_SERIAL.begin(115200);
+  setupWiFi();
 
-  searchWiFi();
-  connectWiFi();
-  
-  webSocket.begin("192.168.1.4", 4000);
+  // server address, port and URL
+  socketIO.begin(SERVER, 4000, "/socket.io/?EIO=4");
+
+  socketIO.onEvent(socketIOEvent);
 }
 
 void loop() {
-  webSocket.loop();
-  webSocket.emit("time:in", "\"19126222\"");
-  delay(500);
+  socketIO.loop();
+
+  // // creat JSON message for Socket.IO (event)
+  // DynamicJsonDocument doc(1024);
+  // JsonArray array = doc.to<JsonArray>();
+
+  // // add evnet name
+  // // Hint: socket.on('event_name', ....
+  // array.add("time:in");
+
+  // // add payload (parameters) for the event
+  // JsonObject param1 = array.createNestedObject();
+  // param1["uid"] = "19126222";
+
+  // // JSON to String (serializion)
+  // String output;
+  // serializeJson(doc, output);
+
+  // // Send event
+  // socketIO.sendEVENT(output);
+
+  // // Print JSON for debugging
+  // Serial.println(output);
+
+  // delay(500);
 }
 
-void searchWiFi(){
-  int numberOfNetwork = WiFi.scanNetworks();
-  USER_SERIAL.println("----");
-  
-  for(int i = 0; i < numberOfNetwork; i++ ){
-    USER_SERIAL.print("Network name: ");
-    USER_SERIAL.println(WiFi.SSID(i));
-    USER_SERIAL.print("Signal strength: ");
-    USER_SERIAL.println(WiFi.RSSI(i));
-    USER_SERIAL.println("--------------");
-  }
-}
 
 
-void connectWiFi(){
-  WiFi.begin(ssid, pass);
-  while(WiFi.status() != WL_CONNECTED){
-    USER_SERIAL.print(".");
-    delay(1000);
-  }
 
-  USER_SERIAL.print("");
-  USER_SERIAL.println("WiFi connected");
-  USER_SERIAL.print("IP Address : ");
-  USER_SERIAL.println(WiFi.localIP());
-  
-}
