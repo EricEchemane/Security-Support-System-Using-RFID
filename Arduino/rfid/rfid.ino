@@ -79,9 +79,7 @@ void printHex(byte *buffer, byte bufferSize) {
 }
 
 String tag;
-// creat JSON message for Socket.IO (event)
-DynamicJsonDocument doc(1024);
-JsonArray array = doc.to<JsonArray>();
+
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -108,8 +106,6 @@ void setup() {
 	Serial.print(F("Using the following key:"));
 	printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
   Serial.println();
-
-  array.add("time:in");
 }
 
 void loop() {
@@ -148,6 +144,10 @@ void loop() {
       Serial.print(tag);
       Serial.println();
 
+      // creat JSON message for Socket.IO (event)
+      DynamicJsonDocument doc(1024);
+      JsonArray array = doc.to<JsonArray>();
+      array.add("time:in");
       JsonObject param1 = array.createNestedObject();
       param1["uid"] = tag;
       String output;
