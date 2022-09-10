@@ -1,5 +1,5 @@
 #include <ESP8266WiFi.h>
-#include <ArduinoJson.h>       // https://arduinojson.org/
+#include <ArduinoJson.h>
 #include <WebSocketsClient.h>  // download and install from https://github.com/Links2004/arduinoWebSockets
 #include <SocketIOclient.h>
 #include <SPI.h>
@@ -14,11 +14,10 @@
 #define PASSWORD "32d6e4d7"
 #define SERVER "192.168.254.100"
 
-MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
+MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
 SocketIOclient socketIO;
 
-// Init array that will store new NUID
 byte nuidPICC[4];
 
 
@@ -83,7 +82,6 @@ void printHex(byte *buffer, byte bufferSize) {
 
 String tag;
 
-
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -96,8 +94,8 @@ void setup() {
 
   socketIO.onEvent(socketIOEvent);
 
-  SPI.begin(); // Init SPI bus
-	rfid.PCD_Init(); // Init MFRC522
+  SPI.begin(); 
+	rfid.PCD_Init();
 	Serial.println();
 	Serial.print(F("Reader :"));
 	rfid.PCD_DumpVersionToSerial();
@@ -135,7 +133,7 @@ void loop() {
 					rfid.uid.uidByte[1] != nuidPICC[1] ||
 					rfid.uid.uidByte[2] != nuidPICC[2] ||
 					rfid.uid.uidByte[3] != nuidPICC[3] ) {
-			// Store NUID into nuidPICC array
+			
 			for (byte i = 0; i < 4; i++) {
 					nuidPICC[i] = rfid.uid.uidByte[i];
 			}
@@ -147,24 +145,14 @@ void loop() {
       Serial.print(tag);
       Serial.println();
 
-      // creat JSON message for Socket.IO (event)
-      DynamicJsonDocument doc(1024);
-      JsonArray array = doc.to<JsonArray>();
-      array.add("time:in");
-      JsonObject param1 = array.createNestedObject();
-      param1["uid"] = tag;
-      String output;
-      serializeJson(doc, output);
+      String output = "[\"time:in\",{\"uid\":\"" + tag + "\"}]";
       socketIO.sendEVENT(output);
-      Serial.println(output);
       Serial.println();
 	}
 	else Serial.println(F("Card read previously."));
 
   tag = "";
-	// Halt PICC
 	rfid.PICC_HaltA();
-	// Stop encryption on PCD
 	rfid.PCD_StopCrypto1();
 }
 
