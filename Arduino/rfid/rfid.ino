@@ -1,23 +1,22 @@
-#include <SPI.h>
-#include <MFRC522.h>
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>       // https://arduinojson.org/
 #include <WebSocketsClient.h>  // download and install from https://github.com/Links2004/arduinoWebSockets
 #include <SocketIOclient.h>
+#include <SPI.h>
+#include <MFRC522.h>
 
+#define SS_PIN D8
+#define RST_PIN D0
 #define SSID "ZTE_2.4G_zncMNd"
 #define PASSWORD "iLyCfbAc"
 #define SERVER "192.168.1.4"
 
-constexpr uint8_t RST_PIN = D3;
-constexpr uint8_t SS_PIN = D4;
-
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
 MFRC522::MIFARE_Key key;
-
 SocketIOclient socketIO;
 
-String tag;
+// Init array that will store new NUID
+byte nuidPICC[4];
 
 
 void messageHandler(uint8_t* payload) {
@@ -72,12 +71,18 @@ void setupWiFi() {
   Serial.println(WiFi.localIP());
 }
 
+void printHex(byte *buffer, byte bufferSize) {
+	for (byte i = 0; i < bufferSize; i++) {
+			Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+			Serial.print(buffer[i], HEX);
+	}
+}
+
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.begin(9600);
-  SPI.begin(); // Init SPI bus
-  rfid.PCD_Init(); // Init MFRC522
 
   setupWiFi();
 
@@ -85,52 +90,79 @@ void setup() {
   socketIO.begin(SERVER, 4000, "/socket.io/?EIO=4");
 
   socketIO.onEvent(socketIOEvent);
+
+  SPI.begin(); // Init SPI bus
+	rfid.PCD_Init(); // Init MFRC522
+	Serial.println();
+	Serial.print(F("Reader :"));
+	rfid.PCD_DumpVersionToSerial();
+	for (byte i = 0; i < 6; i++) {
+			key.keyByte[i] = 0xFF;
+	}
+	Serial.println();
+	Serial.println(F("This code scan the MIFARE Classic NUID."));
+	Serial.print(F("Using the following key:"));
+	printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
+  Serial.println();
 }
+
+String tag;
 
 void loop() {
   socketIO.loop();
 
-  if ( ! rfid.PICC_IsNewCardPresent())
-    return;
-  if (rfid.PICC_ReadCardSerial()) {
-    for (byte i = 0; i < 4; i++) {
-      tag += rfid.uid.uidByte[i];
-    }
-    Serial.println(tag);
+  	// Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
+	if ( ! rfid.PICC_IsNewCardPresent())
+			return;
+	// Verify if the NUID has been readed
+	if ( ! rfid.PICC_ReadCardSerial())
+			return;
 
-    // // creat JSON message for Socket.IO (event)
-    DynamicJsonDocument doc(1024);
-    JsonArray array = doc.to<JsonArray>();
+  Serial.print(F("PICC type: "));
+	MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
+	Serial.println(rfid.PICC_GetTypeName(piccType));
+	// Check is the PICC of Classic MIFARE type
+	if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&
+					piccType != MFRC522::PICC_TYPE_MIFARE_1K &&
+					piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
+			Serial.println(F("Your tag is not of type MIFARE Classic."));
+			return;
+	}
+	if (rfid.uid.uidByte[0] != nuidPICC[0] ||
+					rfid.uid.uidByte[1] != nuidPICC[1] ||
+					rfid.uid.uidByte[2] != nuidPICC[2] ||
+					rfid.uid.uidByte[3] != nuidPICC[3] ) {
+			// Store NUID into nuidPICC array
+			for (byte i = 0; i < 4; i++) {
+					nuidPICC[i] = rfid.uid.uidByte[i];
+			}
 
-    // // add evnet name
-    // // Hint: socket.on('event_name', ....
-    array.add("time:in");
+      for (byte i = 0; i < 4; i++) {
+        tag += rfid.uid.uidByte[i];
+      }
+      Serial.print("Tag: ");
+      Serial.print(tag);
+      Serial.println();
 
-    // // add payload (parameters) for the event
-    JsonObject param1 = array.createNestedObject();
-    param1["uid"] = tag;
+      // creat JSON message for Socket.IO (event)
+      DynamicJsonDocument doc(1024);
+      JsonArray array = doc.to<JsonArray>();
+      array.add("time:in");
+      JsonObject param1 = array.createNestedObject();
+      param1["uid"] = tag;
+      String output;
+      serializeJson(doc, output);
+      socketIO.sendEVENT(output);
+      Serial.println(output);
+	}
+	else Serial.println(F("Card read previously."));
 
-    // // JSON to String (serializion)
-    String output;
-    serializeJson(doc, output);
-
-    // // Send event
-    socketIO.sendEVENT(output);
-
-    // // Print JSON for debugging
-    // Serial.println(output);
-
-    
-
-    // delay(1000);
-
-    tag = "";
-    rfid.PICC_HaltA();
-    rfid.PCD_StopCrypto1();
-  }
-
+  tag = "";
+	// Halt PICC
+	rfid.PICC_HaltA();
+	// Stop encryption on PCD
+	rfid.PCD_StopCrypto1();
 }
-
 
 
 
