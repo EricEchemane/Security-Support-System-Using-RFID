@@ -107,6 +107,9 @@ void setup() {
 }
 
 String tag;
+// creat JSON message for Socket.IO (event)
+DynamicJsonDocument doc(1024);
+JsonArray array = doc.to<JsonArray>();
 
 void loop() {
   socketIO.loop();
@@ -144,9 +147,6 @@ void loop() {
       Serial.print(tag);
       Serial.println();
 
-      // creat JSON message for Socket.IO (event)
-      DynamicJsonDocument doc(1024);
-      JsonArray array = doc.to<JsonArray>();
       array.add("time:in");
       JsonObject param1 = array.createNestedObject();
       param1["uid"] = tag;
@@ -154,6 +154,7 @@ void loop() {
       serializeJson(doc, output);
       socketIO.sendEVENT(output);
       Serial.println(output);
+      Serial.println();
 	}
 	else Serial.println(F("Card read previously."));
 
