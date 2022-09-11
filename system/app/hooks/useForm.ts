@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useForm(
-    initialValues: { [key: string]: string; },
+    initialValues: { [key: string]: any; },
     validators?: { [key: string]: (value: string) => string | void; }
 ) {
     const [values, setValues] = useState(initialValues);

@@ -5,14 +5,15 @@ import Head from "next/head";
 import Link from "next/link";
 
 export default function Home() {
+
   const [timeInData, setTimeInData] = useState<timeInData>();
-  useSocketConnection((data: timeInData) => {
-    setTimeInData(data);
-  });
+  const [connected, setConnected] = useState(false);
+  useSocketConnection(setTimeInData, setConnected);
 
   return <>
     <Head> <title> Security Support System Using RFID </title> </Head>
-    {JSON.stringify(timeInData, null, 4)}
+    <h5> {connected ? 'connected' : 'disconnected'} </h5>
+    <div>{JSON.stringify(timeInData, null, 4)}</div>
     <Link passHref href={'/student/new'}>
       <Button variant="contained"> add new student </Button>
     </Link>

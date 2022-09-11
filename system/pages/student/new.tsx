@@ -1,8 +1,2 @@
-import Head from "next/head";
-
-export default function NewStudent() {
-
-    return <>
-        <Head> <title> New Student </title> </Head>
-    </>;
-}
+import NewStudent from "components/student/new";
+export default NewStudent;
