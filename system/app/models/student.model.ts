@@ -1,32 +1,7 @@
 import isValidEmail from "@app/utils/email-validator";
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
-export interface IStudent {
-    _id?: mongoose.Types.ObjectId;
-    email: string;
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    nameExtension: string;
-    birthDate: Date;
-    rfid: string;
-    mobileNumber: string;
-    section: string;
-    department: string;
-    yearLevel: string;
-    strand: string;
-    isCollege: boolean;
-    course: string;
-    visitationRecords?: {
-        date: Date,
-        timeIn: Date,
-        timeOut: Date,
-    }[];
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-
-const StudentSchema = new mongoose.Schema<IStudent>({
+const StudentSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
@@ -111,6 +86,8 @@ const StudentSchema = new mongoose.Schema<IStudent>({
         }
     }
 });
+
+export type IStudent = InferSchemaType<typeof StudentSchema>;
 
 const Student = mongoose.model("Student", StudentSchema);
 
