@@ -1,9 +1,11 @@
+import Staff from "@app/models/staff.model";
 import Student from "@app/models/student.model";
 import mongoose from "mongoose";
 
 type DB = typeof mongoose & {
     models: {
         Student: typeof Student;
+        Staff: typeof Staff;
     };
 };
 
