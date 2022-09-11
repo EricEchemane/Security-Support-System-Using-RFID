@@ -17,12 +17,10 @@ export default function NewStudent() {
         values.rfid = "";
         await adapter.execute({
             params: { rfid: data.uid },
-            onSuccess: () => { setRfidStatus("used"); },
-            onFailed: () => {
-                setRfidStatus("available");
-                values.rfid = data.uid;
-            }
+            onSuccess: () => setRfidStatus("used"),
+            onFailed: () => setRfidStatus("available")
         });
+        values.rfid = data.uid;
     }, setconnected);
 
     if (rfidStatus === '') return <>
@@ -38,7 +36,7 @@ export default function NewStudent() {
         <Container style={{ marginTop: '2rem' }}>
             <SocketConnectionStatus connected={connected} />
             <Typography variant="h4" mt={2} color='red'>
-                This {values.rfid} RFID code already in use
+                {values.rfid} already in used
             </Typography>
         </Container>
     </>;
