@@ -29,8 +29,13 @@ export default function useSocketConnection(
         socket.on('time:in', (data: timeInData) => {
             onTimeInHandler(data);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
+        return () => {
+            if (socket) {
+                socket.off("time:in");
+            }
+        };
+    }, [onConnectionStatusChange, onTimeInHandler]);
 
     return { socket };
 }
