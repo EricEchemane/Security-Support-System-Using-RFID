@@ -57,9 +57,6 @@ const StudentSchema = new mongoose.Schema({
     strand: {
         type: String,
     },
-    isCollege: {
-        type: Boolean,
-    },
     course: {
         type: String,
     },

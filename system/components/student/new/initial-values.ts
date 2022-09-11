@@ -12,5 +12,4 @@ export const initialValues = {
     yearLevel: '',
     strand: '',
     course: '',
-    isCollege: false,
 };
