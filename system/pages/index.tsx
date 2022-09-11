@@ -1,27 +1,17 @@
-import React, { useEffect } from 'react';
-import io, { Socket } from "socket.io-client";
-
-let socket: Socket | null;
+import useSocketConnection, { timeInData } from "@app/hooks/useSocketConnection";
+import Head from "next/head";
+import { useCallback } from "react";
 
 export default function Home() {
 
-  useEffect(() => {
-    if (socket) return;
-
-    socket = io("http://localhost:4000", {
-      transports: ['websocket']
-    });
-
-    socket.on('connect', () => {
-      console.log('connected');
-    });
-
-    socket.on("time:in", data => {
-      console.log(data);
-    });
+  const onTimeIn = useCallback((data: timeInData) => {
+    console.log(data);
   }, []);
 
-  return (
-    <div>Home</div>
-  );
+  useSocketConnection(onTimeIn);
+
+
+  return <>
+    <Head> <title> Security Support System Using RFID </title> </Head>
+  </>;
 }
