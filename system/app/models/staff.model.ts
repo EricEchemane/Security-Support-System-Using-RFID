@@ -1,5 +1,5 @@
 import isValidEmail from "@app/utils/email-validator";
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const StaffSchema = new mongoose.Schema({
     email: {
@@ -70,11 +70,11 @@ const StaffSchema = new mongoose.Schema({
     }
 });
 
-const Staff = mongoose.model("Staff", StaffSchema);
-
 StaffSchema.pre("save", function (next) {
     this.updatedAt = new Date();
     next();
 });
 
-export default Staff;
+export type IStaff = InferSchemaType<typeof StaffSchema>;
+
+export default StaffSchema;

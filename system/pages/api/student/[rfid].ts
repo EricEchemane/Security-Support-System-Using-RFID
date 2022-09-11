@@ -10,7 +10,7 @@ async function handler(req: NextApiRequest) {
     const db = await connectDB();
     const { Student } = db.models;
 
-    const student = await Student.findByRfid(rfid);
+    const student = await Student.findOne({ rfid });
     if (!student) {
         throw new RequestError(404, 'Student not found');
     }

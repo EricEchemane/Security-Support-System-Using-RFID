@@ -89,11 +89,9 @@ const StudentSchema = new mongoose.Schema({
 
 export type IStudent = InferSchemaType<typeof StudentSchema>;
 
-const Student = mongoose.model("Student", StudentSchema);
-
 StudentSchema.pre("save", function (next) {
     this.updatedAt = new Date();
     next();
 });
 
-export default Student;
+export default StudentSchema;

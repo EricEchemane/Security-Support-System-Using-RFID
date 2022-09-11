@@ -1,13 +1,8 @@
-import Staff from "@app/models/staff.model";
-import Student from "@app/models/student.model";
+import StaffSchema, { IStaff } from "@app/models/staff.model";
+import StudentSchema, { IStudent } from "@app/models/student.model";
 import mongoose from "mongoose";
 
-type DB = typeof mongoose & {
-    models: {
-        Student: typeof Student;
-        Staff: typeof Staff;
-    };
-};
+type DB = typeof mongoose;
 
 let db: DB;
 
@@ -22,12 +17,10 @@ export default async function connectDB() {
     if (!connection) {
         throw new Error("Error connecting to database");
     }
+    if (!mongoose.models.Student) mongoose.model("Student", StudentSchema);
+    if (!mongoose.models.Staff) mongoose.model("Staff", StaffSchema);
 
-    db = connection as DB;
-    db.models = {
-        Student,
-        Staff,
-    };
+    db = connection;
 
     return db;
 }
