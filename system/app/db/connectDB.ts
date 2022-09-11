@@ -1,4 +1,4 @@
-import Student from "@app/schemas/student.schema";
+import Student from "@app/models/student.model";
 import mongoose from "mongoose";
 
 type DB = typeof mongoose & {
