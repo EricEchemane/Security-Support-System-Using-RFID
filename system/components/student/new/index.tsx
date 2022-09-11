@@ -15,25 +15,31 @@ export default function NewStudent() {
 
     useSocketConnection(async (data: timeInData) => {
         values.rfid = "";
-        const res = await adapter.execute({
-            params: { rfid: data.uid }
+        await adapter.execute({
+            params: { rfid: data.uid },
+            onSuccess: () => { setRfidStatus("used"); },
+            onFailed: () => {
+                setRfidStatus("available");
+                values.rfid = data.uid;
+            }
         });
-        if (res) {
-            setRfidStatus("used");
-        } else {
-            setRfidStatus("available");
-            values.rfid = data.uid;
-        }
     }, setconnected);
 
-    if (rfidStatus === '' || rfidStatus === 'used') return <>
+    if (rfidStatus === '') return <>
         <Head> <title> New Student </title> </Head>
         <Container style={{ marginTop: '2rem' }}>
             <SocketConnectionStatus connected={connected} />
             <Typography variant="h3" mt={2}> Get an RFID code first </Typography>
-            {rfidStatus === 'used' && <Typography variant="h5" mt={2} color='red'>
+        </Container>
+    </>;
+
+    if (rfidStatus === 'used') return <>
+        <Head> <title> New Student </title> </Head>
+        <Container style={{ marginTop: '2rem' }}>
+            <SocketConnectionStatus connected={connected} />
+            <Typography variant="h4" mt={2} color='red'>
                 This {values.rfid} RFID code already in use
-            </Typography>}
+            </Typography>
         </Container>
     </>;
 
@@ -41,7 +47,8 @@ export default function NewStudent() {
         <Head> <title> New Student </title> </Head>
 
         <Container style={{ marginTop: '2rem' }}>
-            <Typography variant="h3"> New Student </Typography>
+            <SocketConnectionStatus connected={connected} />
+            <Typography variant="h3" mt={2}> New Student </Typography>
 
             <Stack style={{ marginTop: '2rem' }} spacing={2}>
                 <Stack direction={"row"} spacing={2}>

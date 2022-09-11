@@ -9,11 +9,10 @@ export default function useHttpAdapter<PayloadType, ParamsType>(adapter: HttpAda
     const [data, setData] = useState<any | null>();
 
     const execute = useCallback(async (options: {
-        payload?: PayloadType,
+        payload?: PayloadType;
         params?: ParamsType;
-    }, callbacks = {
-        onSuccess: (data: any) => { },
-        onFailed: () => { },
+        onSuccess?: (data: any) => void;
+        onFailed?: () => void;
     }) => {
         setLoading(true);
         setError(null);
@@ -47,17 +46,17 @@ export default function useHttpAdapter<PayloadType, ParamsType>(adapter: HttpAda
             if (response.ok) {
                 const data = await response.json();
                 setData(data.data);
-                callbacks.onSuccess(data);
+                if (options.onSuccess) options.onSuccess(data);
                 return data;
             }
             else {
                 const error = await response.json();
                 setError(error);
-                callbacks.onFailed();
+                if (options.onFailed) options.onFailed();
             }
         } catch (error: any) {
             setError(error.message);
-            callbacks.onFailed();
+            if (options.onFailed) options.onFailed();
         } finally {
             setLoading(false);
         }
