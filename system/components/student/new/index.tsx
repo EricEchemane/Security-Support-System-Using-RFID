@@ -23,9 +23,8 @@ export default function NewStudent() {
     if (!hasUniqueRfid) return <>
         <Head> <title> New Student </title> </Head>
         <Container style={{ marginTop: '2rem' }}>
-            <Typography variant="h3">
-                <SocketConnectionStatus connected={connected} /> Get an RFID code first
-            </Typography>
+            <SocketConnectionStatus connected={connected} />
+            <Typography variant="h3" mt={2}> Get an RFID code first </Typography>
             <Box mt={2}>
                 {adapter.loading && <LinearProgress />}
             </Box>
