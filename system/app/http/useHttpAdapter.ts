@@ -1,13 +1,7 @@
 import { useCallback, useState } from "react";
 import HttpAdapter from "./base-adapter";
 
-export default function useHttpAdapter<PayloadType, ParamsType>(
-    adapter: HttpAdapter,
-    callbacks = {
-        onSuccess: () => { },
-        onFailed: () => { },
-    }
-) {
+export default function useHttpAdapter<PayloadType, ParamsType>(adapter: HttpAdapter) {
 
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<any>();
@@ -17,6 +11,9 @@ export default function useHttpAdapter<PayloadType, ParamsType>(
     const execute = useCallback(async (options: {
         payload?: PayloadType,
         params?: ParamsType;
+    }, callbacks = {
+        onSuccess: (data: any) => { },
+        onFailed: () => { },
     }) => {
         setLoading(true);
         setError(null);
@@ -50,7 +47,7 @@ export default function useHttpAdapter<PayloadType, ParamsType>(
             if (response.ok) {
                 const data = await response.json();
                 setData(data.data);
-                callbacks.onSuccess();
+                callbacks.onSuccess(data);
                 return data;
             }
             else {
