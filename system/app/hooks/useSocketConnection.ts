@@ -8,20 +8,23 @@ export interface OnTimeInHandler {
     (data: timeInData): void;
 }
 
-export default function useSocketConnection(onTimeInHandler: OnTimeInHandler) {
+export default function useSocketConnection(
+    onTimeInHandler: OnTimeInHandler,
+    onConnectionStatusChange: (connected: boolean) => void
+) {
 
     useEffect(() => {
-        if (socket) return;
-
         socket = io("http://localhost:4000", {
             transports: ['websocket']
         });
 
         socket.on('connect', () => {
             console.log('connected');
+            onConnectionStatusChange(true);
         });
         socket.on('disconnect', () => {
             console.log('diconnected');
+            onConnectionStatusChange(false);
         });
         socket.on('time:in', (data: timeInData) => {
             onTimeInHandler(data);
