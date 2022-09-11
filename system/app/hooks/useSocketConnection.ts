@@ -24,6 +24,7 @@ export default function useSocketConnection(onTimeInHandler: OnTimeInHandler) {
             console.log('diconnected');
         });
         socket.on('time:in', (data: timeInData) => {
+            console.log(data);
             onTimeInHandler(data);
         });
 

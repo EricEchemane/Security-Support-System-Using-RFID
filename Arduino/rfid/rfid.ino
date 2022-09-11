@@ -7,12 +7,12 @@
 
 #define SS_PIN D8
 #define RST_PIN D0
-// #define SSID "ZTE_2.4G_zncMNd"
-// #define PASSWORD "iLyCfbAc"
-// #define SERVER "192.168.1.4"
-#define SSID "AN5506-04-FA_91b28"
-#define PASSWORD "32d6e4d7"
-#define SERVER "192.168.254.100"
+#define SSID "ZTE_2.4G_zncMNd"
+#define PASSWORD "iLyCfbAc"
+#define SERVER "192.168.1.4"
+// #define SSID "AN5506-04-FA_91b28"
+// #define PASSWORD "32d6e4d7"
+// #define SERVER "192.168.254.100"
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;

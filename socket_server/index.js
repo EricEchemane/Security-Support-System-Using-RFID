@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
-    cors: { origin: '*' }
+    cors: { origin: '*' },
+    allowEIO3: true
 });
 
 io.on('connection', socket => {
