@@ -24,6 +24,10 @@ export default async function connectDB() {
     }
 
     db = connection as DB;
+    db.models = {
+        Student,
+        Staff,
+    };
 
     return db;
 }
