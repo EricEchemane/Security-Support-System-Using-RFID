@@ -24,14 +24,10 @@ export default function useSocketConnection(onTimeInHandler: OnTimeInHandler) {
             console.log('diconnected');
         });
         socket.on('time:in', (data: timeInData) => {
-            console.log(data);
             onTimeInHandler(data);
         });
-
-        return () => {
-            socket?.off('time:in');
-        };
-    }, [onTimeInHandler]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return { socket };
 }
