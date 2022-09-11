@@ -3,7 +3,7 @@ import SocketConnectionStatus from "@components/shared/SocketConnectionStatus";
 import { Container, Stack, TextField, Typography } from "@mui/material";
 import StudentAdapter from "@app/http/adapters/user.adapter";
 import useForm from "@app/hooks/useForm";
-import { initialValues } from "./form";
+import { initialValues } from "./initial-values";
 import { useState } from "react";
 import Head from "next/head";
 
