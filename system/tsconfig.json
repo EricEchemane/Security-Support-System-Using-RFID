@@ -23,7 +23,7 @@
       "@app/*": [
         "app/*"
       ],
-      "@components": [
+      "@components/*": [
         "components/*"
       ]
     }

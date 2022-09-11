@@ -1,0 +1,16 @@
+export const initialValues = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    nameExtension: '',
+    birthDate: new Date(),
+    rfid: '',
+    mobileNumber: '',
+    section: '',
+    department: '',
+    yearLevel: '',
+    strand: '',
+    course: '',
+    isCollege: false,
+};
