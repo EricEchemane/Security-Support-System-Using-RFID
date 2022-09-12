@@ -7,7 +7,17 @@
         "moduleResolution": "node",
         "outDir": "build",
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "@entities/*": [
+                "entities/*"
+            ],
+            "@controllers/*": [
+                "controllers/*"
+            ],
+            "@routes/*": [
+                "routes/*"
+            ]
+        }
     },
     "include": [
         "**/*.ts"
