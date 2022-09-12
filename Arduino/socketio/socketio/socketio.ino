@@ -13,6 +13,9 @@
 #define RST_PIN D0
 
 // network connection details
+// const char* ssid = "AN5506-04-FA_91b28";
+// const char* pass = "32d6e4d7";
+// const char* ip = "192.168.254.100";
 const char* ssid = "ZTE_2.4G_zncMNd";
 const char* pass = "iLyCfbAc";
 const char* ip = "192.168.1.4";
@@ -71,27 +74,23 @@ void loop() {
 			USER_SERIAL.println(F("Your tag is not of type MIFARE Classic."));
 			return;
 	}
-	if (rfid.uid.uidByte[0] != nuidPICC[0] ||
-					rfid.uid.uidByte[1] != nuidPICC[1] ||
-					rfid.uid.uidByte[2] != nuidPICC[2] ||
-					rfid.uid.uidByte[3] != nuidPICC[3] ) {
+
 			
-			for (byte i = 0; i < 4; i++) {
-					nuidPICC[i] = rfid.uid.uidByte[i];
-			}
+  for (byte i = 0; i < 4; i++) {
+      nuidPICC[i] = rfid.uid.uidByte[i];
+  }
 
-      for (byte i = 0; i < 4; i++) {
-        tag += rfid.uid.uidByte[i];
-      }
-      USER_SERIAL.print("Tag: ");
-      USER_SERIAL.print(tag);
-      USER_SERIAL.println();
+  for (byte i = 0; i < 4; i++) {
+    tag += rfid.uid.uidByte[i];
+  }
+  USER_SERIAL.print("Tag: ");
+  USER_SERIAL.print(tag);
+  USER_SERIAL.println();
 
-      String output = "[\"time:in\",{\"uid\":\"" + tag + "\"}]";
-      webSocket.sendEVENT(output);
-      USER_SERIAL.println();
-	}
-	else USER_SERIAL.println(F("Card read previously."));
+  String output = "[\"time:in\",{\"uid\":\"" + tag + "\"}]";
+  webSocket.sendEVENT(output);
+  USER_SERIAL.println();
+	
 
   tag = "";
 	rfid.PICC_HaltA();
