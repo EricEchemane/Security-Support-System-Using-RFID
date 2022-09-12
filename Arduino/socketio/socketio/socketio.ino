@@ -7,24 +7,26 @@
 #include <MFRC522.h>
 
 #define USER_SERIAL Serial
+
+// pins for rfid
 #define SS_PIN D8
 #define RST_PIN D0
 
-
+// network connection details
 const char* ssid = "ZTE_2.4G_zncMNd";
 const char* pass = "iLyCfbAc";
 const char* ip = "192.168.1.4";
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
+
 SocketIOclient webSocket;
 
+// below are the placeholder of uid of the rfid
 byte nuidPICC[4];
 String tag;
 
-
 void setup() {
-
 
   USER_SERIAL.begin(9600);
 
@@ -33,10 +35,10 @@ void setup() {
   
   webSocket.begin(ip, 4000);
 
-  // webSocket.onEvent(socketIOEvent);
-
+  // init rfid
   SPI.begin(); 
 	rfid.PCD_Init();
+
   USER_SERIAL.println();
 	USER_SERIAL.print(F("Reader :"));
 	rfid.PCD_DumpVersionToSerial();
@@ -105,21 +107,6 @@ void printHex(byte *buffer, byte bufferSize) {
 	}
 }
 
-void socketIOEvent(socketIOmessageType_t type, uint8_t* payload, size_t length) {
-  switch (type) {
-    case sIOtype_DISCONNECT:
-      USER_SERIAL.println("Disconnected!");
-      break;
-
-    case sIOtype_CONNECT:
-      USER_SERIAL.printf("Connected to url: %s%s\n", ip, payload);
-
-      // join default namespace (no auto join in Socket.IO V3)
-      webSocket.send(sIOtype_CONNECT, "/");
-      break;
-  }
-}
-
 void searchWiFi(){
   int numberOfNetwork = WiFi.scanNetworks();
   USER_SERIAL.println("----");
@@ -132,7 +119,6 @@ void searchWiFi(){
     USER_SERIAL.println("--------------");
   }
 }
-
 
 void connectWiFi(){
   WiFi.begin(ssid, pass);
