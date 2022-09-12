@@ -77,4 +77,6 @@ StaffSchema.pre("save", function (next) {
 
 export type IStaff = InferSchemaType<typeof StaffSchema>;
 
-export default StaffSchema;
+const Staff = mongoose.model<IStaff>("Staff", StaffSchema);
+
+export default Staff;
