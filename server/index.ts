@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+import studentRoutes from '@routes/student.routes';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -5,6 +8,10 @@ import { Server } from 'socket.io';
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
+// routes
+app.use('/student', studentRoutes);
+
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
     cors: { origin: '*' },
