@@ -4,10 +4,13 @@ import studentRoutes from '@routes/student.routes';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
+import cors from "cors";
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+
+app.use(cors({ origin: "http://localhost:4200" }));
 
 // routes
 app.use('/student', studentRoutes);
