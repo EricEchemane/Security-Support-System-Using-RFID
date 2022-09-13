@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TimeInService } from 'src/app/services/time-in.service';
+import { TimeInService } from 'src/app/services/time-in/time-in.service';
 
 type timeIn = {
   uid: string;
