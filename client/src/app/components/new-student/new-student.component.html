@@ -1,3 +1,7 @@
-<div *ngIf="timeIn">
-    <h2> {{ timeIn.uid }} </h2>
+<div *ngIf="previousTappedRfid !== ''">
+    <h2> {{ previousTappedRfid }} </h2>
+</div>
+
+<div>
+    Status: {{ rfidStatus }}
 </div>
