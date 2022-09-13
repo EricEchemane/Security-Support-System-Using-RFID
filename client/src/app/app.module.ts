@@ -8,13 +8,24 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
+import { NewStudentComponent } from './components/new-student/new-student.component';
+
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = {
+  url: 'http://localhost:4000', options: {
+    transports: ['websocket'],
+  }
+};
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NewStudentComponent,
   ],
   imports: [
+    SocketIoModule.forRoot(config),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
