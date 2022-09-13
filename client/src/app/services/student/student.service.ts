@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 const serverUrl = "http://localhost:4000";
@@ -13,8 +14,9 @@ interface ResponseType {
 })
 export class StudentService {
 
-  async checkIfRfidIsAvailable(rfid: string): Promise<ResponseType> {
-    const res = await fetch(`${serverUrl}/student/${rfid}`);
-    return (await res.json());
+  constructor(private http: HttpClient) { }
+
+  checkIfRfidIsAvailable(rfid: string) {
+    return this.http.get<ResponseType>(`${serverUrl}/student/${rfid}`);
   }
 }
