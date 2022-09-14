@@ -17,7 +17,7 @@ export default async function getDbConnection(): Promise<DB> {
     const uri = process.env.MONGODB_URI;
     if (!uri) throw new Error("MONGODB_URI is not defined");
 
-    db = (await mongoose.connect(uri)) as DB;
+    db = (await mongoose.connect(uri, { dbName: 'rfid' })) as DB;
     db.models.Student = Student;
     db.models.Staff = Staff;
 
