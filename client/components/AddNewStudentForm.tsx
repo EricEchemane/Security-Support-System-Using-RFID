@@ -10,11 +10,13 @@ import { Student } from 'types/student.model';
 import { useRouter } from 'next/router';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
+import useNotification from 'hooks/useNotification';
 
 export default function AddNewStudentForm(props: {
     uid: string;
 }) {
     const router = useRouter();
+    const notify = useNotification();
     const { values, handleChange } = useForm({ ...formInitialValues, rfid: props.uid });
     const [birthDate, setBirthDate] = React.useState<Dayjs | null>(
         dayjs('03/29/2000'),
@@ -24,8 +26,10 @@ export default function AddNewStudentForm(props: {
         values.birthDate = newValue?.format('MM/DD/YYYY');
     };
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'POST'), {
-        onSuccess: console.log,
-        onFailed: console.log,
+        onSuccess: () => {
+            notify('Student successfully created', 'success');
+        },
+        onFailed: msg => notify(msg, 'error')
     });
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
@@ -93,6 +97,16 @@ export default function AddNewStudentForm(props: {
                         label="Mobile number"
                         name="mobileNumber"
                         value={values.mobileNumber}
+                        onChange={handleChange}
+                        variant="outlined" />
+                </GridItem>
+                <GridItem>
+                    <TextField
+                        fullWidth required
+                        id="email"
+                        label="Email"
+                        name="email"
+                        value={values.email}
                         onChange={handleChange}
                         variant="outlined" />
                 </GridItem>
