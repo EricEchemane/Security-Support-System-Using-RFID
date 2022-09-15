@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:4200" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 
 // routes
 app.use('/student', studentRoutes);
