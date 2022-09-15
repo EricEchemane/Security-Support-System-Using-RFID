@@ -8,7 +8,7 @@ export interface OnTimeInHandler {
     (data: timeInData): void;
 }
 
-export default function useSocketConnection(
+export default function useSocket(
     onTimeInHandler: OnTimeInHandler,
     onConnectionStatusChange: (connected: boolean) => void
 ) {
