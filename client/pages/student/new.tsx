@@ -1,4 +1,5 @@
-import { Container, Stack, Typography } from '@mui/material';
+import { Container, Paper, Stack, Typography } from '@mui/material';
+import AddNewStudentForm from 'components/AddNewStudentForm';
 import SocketConnectionStatus from 'components/shared/SocketConnectionStatus';
 import useSocket from 'hooks/useSocket';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
@@ -31,15 +32,21 @@ export default function NewStudent() {
             <Stack spacing={3} alignItems="flex-start" mt={3}>
                 <SocketConnectionStatus connected={connected} />
                 <Typography variant='h4'> New Student • {previousTappedRfid.current} </Typography>
-                {rfidStatus === 'untapped' && <Typography variant='button'> Tap an RFID first </Typography>}
-                {rfidStatus === 'used' &&
-                    <Typography variant='button' color='red'>
-                        This RFID code {previousTappedRfid.current} is already used
-                    </Typography>}
-                {rfidStatus === 'available' && <>
-                    <Typography variant='button'> {previousTappedRfid.current} is available </Typography>
-                </>}
+                {rfidStatus === 'untapped' && <RfidStatus text='Tap an RFID first on the RFID reader to register' />}
+                {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid.current} is already used`} error />}
+                {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid.current} is available`} />}
+                {rfidStatus === 'available' && <AddNewStudentForm uid={previousTappedRfid.current} />}
             </Stack>
         </Container>
     </>;
 }
+
+const RfidStatus = (props: { error?: boolean; text: string; }) => {
+    return <Paper
+        elevation={3}
+        style={{ padding: '1rem', borderRadius: '.5rem' }}>
+        <Typography variant='body1' color={props.error ? 'red' : ''}>
+            {props.text}
+        </Typography>
+    </Paper>;
+};
