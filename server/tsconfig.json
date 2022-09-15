@@ -7,6 +7,7 @@
         "moduleResolution": "node",
         "outDir": "build",
         "baseUrl": ".",
+        "rootDir": ".",
         "paths": {
             "@entities/*": [
                 "entities/*"
