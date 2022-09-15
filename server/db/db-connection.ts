@@ -21,5 +21,5 @@ export default async function getDbConnection(): Promise<DB> {
     db.models.Student = Student;
     db.models.Staff = Staff;
 
-    return db;
+    return db as DB;
 }

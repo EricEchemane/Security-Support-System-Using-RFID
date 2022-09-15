@@ -5,5 +5,6 @@ import { Router } from "express";
 const studentRoutes = Router();
 
 studentRoutes.get("/:rfid", normalize(studentControllers.getByRfid));
+studentRoutes.post("/", normalize(studentControllers.create));
 
 export default studentRoutes;

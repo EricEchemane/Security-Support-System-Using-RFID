@@ -26,6 +26,12 @@ export default function normalize(
             if (error.message.includes('E11000')) {
                 error.message = 'This email is already in use';
             }
+            if (error.message.includes(':')) {
+                const idx1 = (error.message as string).indexOf(':');
+                const idx2 = (error.message as string).indexOf(':', idx1 + 1);
+                const idx3 = (error.message as string).indexOf(',');
+                error.message = (error.message as string).substring(idx2 + 2, idx3);
+            }
             if (error instanceof RequestError) {
                 return res.status(error.code).json(error);
             }
