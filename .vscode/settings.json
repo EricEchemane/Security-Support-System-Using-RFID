@@ -2,6 +2,9 @@
   "files.exclude": {
     "system\\.next": true,
     "system\\node_modules": true,
-    "server\\node_modules": true
+    "server\\node_modules": true,
+    "client\\.next": true,
+    "client\\node_modules": true,
+    "client\\styles": true
   }
 }
