@@ -8,6 +8,8 @@ import Grid from '@mui/material/Grid';
 import useForm from 'hooks/useForm';
 import { Student } from 'types/student.model';
 import { useRouter } from 'next/router';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import HttpAdapter from 'http_adapters/http-adapter-interface';
 
 export default function AddNewStudentForm(props: {
     uid: string;
@@ -21,10 +23,14 @@ export default function AddNewStudentForm(props: {
         setBirthDate(newValue);
         values.birthDate = newValue?.format('MM/DD/YYYY');
     };
+    const adapter = useHttpAdapter(new HttpAdapter('/student', 'POST'), {
+        onSuccess: console.log,
+        onFailed: console.log,
+    });
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        console.log(values);
+        adapter.execute({ payload: values });
     };
 
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
