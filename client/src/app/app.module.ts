@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { NewStudentComponent } from './components/new-student/new-student.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
@@ -35,6 +37,8 @@ const config: SocketIoConfig = {
     MatSliderModule,
     MatButtonModule,
     FormsModule,
+    MatToolbarModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

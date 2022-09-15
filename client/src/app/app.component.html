@@ -1,4 +1,16 @@
-<a routerLink="new-student">
-    <button mat-raised-button>New Student</button>
-</a>
+<p>
+    <mat-toolbar color="primary">
+        <span> Security Support System </span>
+        <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            Home
+        </a>
+        <a mat-button routerLink="/new-student" routerLinkActive="active">
+            Add student
+        </a>
+        <a mat-button routerLink="/time-in" routerLinkActive="active">
+            Time-in
+        </a>
+        <!-- <span class="example-spacer"></span> -->
+    </mat-toolbar>
+</p>
 <router-outlet></router-outlet>
