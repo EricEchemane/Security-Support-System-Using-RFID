@@ -4,7 +4,7 @@ export type Student = {
     lastName: string;
     middleName: string;
     nameExtension?: string;
-    birthDate: Date;
+    birthDate: string;
     rfid: string;
     mobileNumber: string;
     section: string;

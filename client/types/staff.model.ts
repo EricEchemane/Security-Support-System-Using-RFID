@@ -4,7 +4,7 @@ export type Staff = {
     lastName: string;
     middleName: string;
     nameExtension?: string;
-    birthDate: Date;
+    birthDate: String;
     rfid: string;
     mobileNumber: string;
     department: string;
