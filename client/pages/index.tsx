@@ -7,9 +7,12 @@ export default function Home() {
     <Head> <title> Security Support System Using RFID </title> </Head>
 
     <Container>
-      <Stack>
+      <Stack spacing={2}>
         <Link passHref href={'/student/new'}>
           <Button variant='contained'> Add new student </Button>
+        </Link>
+        <Link passHref href={'/staff/new'}>
+          <Button variant='contained'> Add new staff </Button>
         </Link>
       </Stack>
     </Container>

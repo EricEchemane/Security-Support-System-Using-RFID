@@ -27,7 +27,7 @@ const style = {
     p: 4,
 };
 
-export default function AddNewStudentForm(props: {
+export default function AddNewStaffForm(props: {
     uid: string;
     onReset: () => void;
 }) {
@@ -131,56 +131,8 @@ export default function AddNewStudentForm(props: {
                         onChange={handleChange}
                         variant="outlined" />
                 </GridItem>
-                <GridItem>
-                    <TextField
-                        fullWidth required
-                        id="section"
-                        label="Section"
-                        name="section"
-                        value={values.section}
-                        onChange={handleChange}
-                        variant="outlined" />
-                </GridItem>
-                <GridItem>
-                    <TextField
-                        fullWidth
-                        id="department"
-                        label="Department"
-                        name="department"
-                        value={values.department}
-                        onChange={handleChange}
-                        variant="outlined" />
-                </GridItem>
-                <GridItem>
-                    <TextField
-                        fullWidth required
-                        id="yearLevel"
-                        label="Year Level"
-                        name="yearLevel"
-                        value={values.yearLevel}
-                        onChange={handleChange}
-                        variant="outlined" />
-                </GridItem>
-                <GridItem>
-                    <TextField
-                        fullWidth
-                        id="strand"
-                        label="Strand"
-                        name="strand"
-                        value={values.strand}
-                        onChange={handleChange}
-                        variant="outlined" />
-                </GridItem>
-                <GridItem>
-                    <TextField
-                        fullWidth
-                        id="course"
-                        label="Course"
-                        name="course"
-                        value={values.course}
-                        onChange={handleChange}
-                        variant="outlined" />
-                </GridItem>
+
+
             </Grid>
             <Stack justifyContent="flex-end" spacing={2} direction="row">
                 <Button size='large' variant='outlined' onClick={cancel}> Cancel </Button>
