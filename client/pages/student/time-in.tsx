@@ -31,7 +31,7 @@ export default function TimeIn() {
     });
 
     useSocket(data => {
-        if (previousTappedRfid.current === data.uid) return;
+        // if (previousTappedRfid.current === data.uid) return;
         previousTappedRfid.current = data.uid;
         adapter.execute({ payload: { rfid: data.uid } });
     }, setConnected);

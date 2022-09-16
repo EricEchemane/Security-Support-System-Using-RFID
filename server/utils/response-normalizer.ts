@@ -24,7 +24,7 @@ export default function normalize(
             console.error(error.message);
 
             if (error.message.includes('E11000')) {
-                error.message = 'This email is already in use';
+                error.message = 'This email or mobile number is already in used';
             }
             if (error.message.includes(':')) {
                 const idx1 = (error.message as string).indexOf(':');
