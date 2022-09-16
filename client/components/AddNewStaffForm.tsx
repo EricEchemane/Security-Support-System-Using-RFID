@@ -10,9 +10,7 @@ import { useRouter } from 'next/router';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
 import useNotification from 'hooks/useNotification';
-
 import Box from '@mui/material/Box';
-
 import Modal from '@mui/material/Modal';
 import { Staff } from 'types/staff.model';
 const style = {
@@ -54,9 +52,7 @@ export default function AddNewStaffForm(props: {
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        // adapter.execute({ payload: values });
-        console.log(values);
-
+        adapter.execute({ payload: values });
     };
     const [teaching, setTeaching] = React.useState('Teaching');
     const handleTeachingChange = (event: SelectChangeEvent) => {
@@ -142,7 +138,6 @@ export default function AddNewStaffForm(props: {
                         value={values.email}
                         onChange={handleChange}
                         variant="outlined" />
-
                 </GridItem>
 
                 <GridItem>
@@ -156,11 +151,8 @@ export default function AddNewStaffForm(props: {
                             onChange={handleTeachingChange}>
                             <MenuItem value={"Non Teaching"}>Non Teaching</MenuItem>
                             <MenuItem value={"Teaching"}>Teaching</MenuItem>
-
                         </Select>
-
                     </FormControl>
-
                 </GridItem>
                 <GridItem>
                     {teaching === "Teaching" && <>
@@ -200,7 +192,6 @@ export default function AddNewStaffForm(props: {
                             </Select>
                         </FormControl></>}
                 </GridItem>
-
             </Grid>
             <Stack justifyContent="flex-end" spacing={2} direction="row">
                 <Button size='large' variant='outlined' onClick={cancel}> Cancel </Button>
@@ -218,13 +209,12 @@ export default function AddNewStaffForm(props: {
                     RFID
                 </Typography>
                 <Typography align='center' id="modal-modal-description" sx={{ mt: 2 }}>
-                    Student successfully created success
+                    Staff successfully created success
                 </Typography>
                 <Stack spacing={2} mt={3} direction={"row"} justifyContent="stretch" width={"100%"}>
                     <Button onClick={cancel} variant="outlined" fullWidth>Return Home</Button>
                     <Button onClick={props.onReset} variant="contained" fullWidth>Add another</Button>
                 </Stack>
-
             </Box>
         </Modal>
     </LocalizationProvider>;
@@ -247,5 +237,4 @@ const formInitialValues: Staff = {
     mobileNumber: '+63',
     department: '',
     teaching: 'Teaching',
-
 };

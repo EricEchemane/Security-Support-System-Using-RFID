@@ -1,4 +1,4 @@
-import Staff from "@entities/staff.entity";
+import Staff from "@entities/staff.model";
 import Student from "@entities/student.model";
 import mongoose from "mongoose";
 

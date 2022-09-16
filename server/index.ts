@@ -5,6 +5,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from "cors";
+import staffRoutes from "@routes/staff.routes";
 
 const PORT = process.env.PORT || 4000;
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // routes
 app.use('/student', studentRoutes);
+app.use('/staff', staffRoutes);
 
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {

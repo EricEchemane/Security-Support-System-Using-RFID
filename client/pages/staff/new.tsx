@@ -14,7 +14,7 @@ export default function NewStaff() {
     const [connected, setConnected] = useState(false);
     const [rfidStatus, setRfidStatus] = useState<rfidStatusTypes>("untapped");
     const previousTappedRfid = useRef('');
-    const adapter = useHttpAdapter(new HttpAdapter('/student/:rfid', 'GET'), {
+    const adapter = useHttpAdapter(new HttpAdapter('/staff/:rfid', 'GET'), {
         onSuccess: () => setRfidStatus("used"),
         onFailed: () => setRfidStatus("available"),
     });
