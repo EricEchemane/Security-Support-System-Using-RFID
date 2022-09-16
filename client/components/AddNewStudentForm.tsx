@@ -12,9 +12,28 @@ import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
 import useNotification from 'hooks/useNotification';
 
+import Box from '@mui/material/Box';
+
+import Modal from '@mui/material/Modal';
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 export default function AddNewStudentForm(props: {
     uid: string;
+    onReset: () => void;
 }) {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const router = useRouter();
     const notify = useNotification();
     const { values, handleChange } = useForm({ ...formInitialValues, rfid: props.uid });
@@ -27,7 +46,8 @@ export default function AddNewStudentForm(props: {
     };
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'POST'), {
         onSuccess: () => {
-            notify('Student successfully created', 'success');
+            //  notify('Student successfully created', 'success');
+            handleOpen();
         },
         onFailed: msg => notify(msg, 'error')
     });
@@ -35,6 +55,9 @@ export default function AddNewStudentForm(props: {
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         adapter.execute({ payload: values });
+    };
+    const addAnother = function () {
+
     };
 
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -166,6 +189,26 @@ export default function AddNewStudentForm(props: {
                 <Button type='submit' size='large' variant='contained'> Save </Button>
             </Stack>
         </form>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <Typography align='center' id="modal-modal-title" variant="h6" component="h2">
+                    RFID
+                </Typography>
+                <Typography align='center' id="modal-modal-description" sx={{ mt: 2 }}>
+                    Student successfully created success
+                </Typography>
+                <Stack spacing={2} mt={3} direction={"row"} justifyContent="stretch" width={"100%"}>
+                    <Button onClick={cancel} variant="outlined" fullWidth>Return Home</Button>
+                    <Button onClick={props.onReset} variant="contained" fullWidth>Add another</Button>
+                </Stack>
+
+            </Box>
+        </Modal>
     </LocalizationProvider>;
 }
 

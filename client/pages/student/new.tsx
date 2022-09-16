@@ -25,6 +25,10 @@ export default function NewStudent() {
             params: { rfid: data.uid }
         });
     }, setConnected);
+    const reset = () => {
+        setRfidStatus("untapped");
+        previousTappedRfid.current = "";
+    };
 
     return <>
         <Head> <title> Add new student </title> </Head>
@@ -35,7 +39,7 @@ export default function NewStudent() {
                 {rfidStatus === 'untapped' && <RfidStatus text='Tap an RFID first on the RFID reader to register' />}
                 {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid.current} is already used`} error />}
                 {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid.current} is available`} />}
-                {rfidStatus === 'available' && <AddNewStudentForm uid={previousTappedRfid.current} />}
+                {rfidStatus === 'available' && <AddNewStudentForm uid={previousTappedRfid.current} onReset={reset} />}
             </Stack>
         </Container>
     </>;
