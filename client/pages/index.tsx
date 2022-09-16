@@ -11,6 +11,9 @@ export default function Home() {
         <Link passHref href={'/student/new'}>
           <Button variant='contained'> Add new student </Button>
         </Link>
+        <Link passHref href={'/student/time-in'}>
+          <Button variant='contained'> Student Time-in </Button>
+        </Link>
         <Link passHref href={'/staff/new'}>
           <Button variant='contained'> Add new staff </Button>
         </Link>

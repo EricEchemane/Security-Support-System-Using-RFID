@@ -26,6 +26,25 @@ const studentControllers = {
 
         await newStudent.save();
         return newStudent;
+    },
+    timeIn: async (req: Request) => {
+        if (req.method !== 'POST') throw new RequestError(405, "Method not allowed");
+        const { rfid } = req.body;
+        if (!rfid) throw new RequestError(400, "RFID is required");
+
+        const db = await getDbConnection();
+        const { Student } = db.models;
+
+        const student = await Student.findByRfid(rfid);
+        if (!student) throw new RequestError(404, "Student not found");
+
+        student.visitationRecords.push({
+            date: new Date(),
+            timeIn: new Date(),
+            timeOut: null,
+        });
+        await student.save();
+        return student;
     }
 };
 
