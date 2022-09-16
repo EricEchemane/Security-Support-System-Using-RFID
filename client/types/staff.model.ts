@@ -8,6 +8,7 @@ export type Staff = {
     rfid: string;
     mobileNumber: string;
     department: string;
+    teaching: string;
     visitationRecords?: {
         date: Date,
         timeIn: Date,

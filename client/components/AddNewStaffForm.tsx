@@ -3,10 +3,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import useForm from 'hooks/useForm';
-import { Student } from 'types/student.model';
 import { useRouter } from 'next/router';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
@@ -15,6 +14,7 @@ import useNotification from 'hooks/useNotification';
 import Box from '@mui/material/Box';
 
 import Modal from '@mui/material/Modal';
+import { Staff } from 'types/staff.model';
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -44,7 +44,7 @@ export default function AddNewStaffForm(props: {
         setBirthDate(newValue);
         values.birthDate = newValue?.format('MM/DD/YYYY');
     };
-    const adapter = useHttpAdapter(new HttpAdapter('/student', 'POST'), {
+    const adapter = useHttpAdapter(new HttpAdapter('/staff', 'POST'), {
         onSuccess: () => {
             //  notify('Student successfully created', 'success');
             handleOpen();
@@ -54,9 +54,21 @@ export default function AddNewStaffForm(props: {
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        adapter.execute({ payload: values });
+        // adapter.execute({ payload: values });
+        console.log(values);
+
+    };
+    const [teaching, setTeaching] = React.useState('Teaching');
+    const handleTeachingChange = (event: SelectChangeEvent) => {
+        setTeaching(event.target.value as string);
+        values.teaching = event.target.value;
     };
 
+    const [department, setDepartment] = React.useState('');
+    const handleDepartmentChange = (event: SelectChangeEvent) => {
+        setDepartment(event.target.value as string);
+        values.department = event.target.value;
+    };
 
     return <LocalizationProvider dateAdapter={AdapterDayjs}>
         <form style={{ marginTop: '2rem', width: '100%' }} onSubmit={handleSubmit}>
@@ -130,8 +142,64 @@ export default function AddNewStaffForm(props: {
                         value={values.email}
                         onChange={handleChange}
                         variant="outlined" />
+
                 </GridItem>
 
+                <GridItem>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Type of Staff</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={teaching}
+                            label="Type of Staff"
+                            onChange={handleTeachingChange}>
+                            <MenuItem value={"Non Teaching"}>Non Teaching</MenuItem>
+                            <MenuItem value={"Teaching"}>Teaching</MenuItem>
+
+                        </Select>
+
+                    </FormControl>
+
+                </GridItem>
+                <GridItem>
+                    {teaching === "Teaching" && <>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Teaching Department</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={department}
+                                label="Teaching Department"
+                                onChange={handleDepartmentChange}>
+                                <MenuItem value={"CITCS"}>CITCS</MenuItem>
+                                <MenuItem value={"CCJ"}>CJJ</MenuItem>
+                                <MenuItem value={"CBA"}>CBA</MenuItem>
+                                <MenuItem value={"CTE"}>CTE</MenuItem>
+                                <MenuItem value={"CAS"}>CAS</MenuItem>
+                                <MenuItem value={"STEM"}>STEM</MenuItem>
+                                <MenuItem value={"GAS"}>GAS</MenuItem>
+                                <MenuItem value={"HUMSS"}>HUMSS</MenuItem>
+                                <MenuItem value={"ABM"}>ABM</MenuItem>
+                                <MenuItem value={"ICT"}>ICT</MenuItem>
+                            </Select>
+                        </FormControl></>}
+                    {teaching === "Non Teaching" && <>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Non Teaching Department</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={department}
+                                label="Non Teaching Department"
+                                onChange={handleDepartmentChange}>
+                                <MenuItem value={"Admin"}>Admin</MenuItem>
+                                <MenuItem value={"Security"}>Secuirity</MenuItem>
+                                <MenuItem value={"Nurses"}>Nurses</MenuItem>
+                                <MenuItem value={"Utilities"}>Utilities</MenuItem>
+                            </Select>
+                        </FormControl></>}
+                </GridItem>
 
             </Grid>
             <Stack justifyContent="flex-end" spacing={2} direction="row">
@@ -168,7 +236,7 @@ const GridItem = (props: { children: any; }) => {
     </Grid>;
 };
 
-const formInitialValues: Student = {
+const formInitialValues: Staff = {
     email: '',
     firstName: '',
     lastName: '',
@@ -177,9 +245,7 @@ const formInitialValues: Student = {
     birthDate: '03/29/2000',
     rfid: '',
     mobileNumber: '+63',
-    section: '',
     department: '',
-    yearLevel: '',
-    strand: '',
-    course: '',
+    teaching: 'Teaching',
+
 };

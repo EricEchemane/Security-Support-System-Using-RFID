@@ -46,6 +46,9 @@ const StaffSchema = new mongoose.Schema({
     department: {
         type: String,
     },
+    typeOfStaff: {
+        type: String,
+    },
     visitationRecords: [{
         date: Date,
         timeIn: Date,
