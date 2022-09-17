@@ -12,7 +12,6 @@ export default function useSocket(
     onTimeInHandler: OnTimeInHandler,
     onConnectionStatusChange: (connected: boolean) => void
 ) {
-
     useEffect(() => {
         socket = io("http://localhost:4000", {
             transports: ['websocket']
@@ -26,16 +25,14 @@ export default function useSocket(
             console.log('diconnected');
             onConnectionStatusChange(false);
         });
-        socket.on('time:in', (data: timeInData) => {
-            onTimeInHandler(data);
-        });
+        socket.on('time:in', onTimeInHandler);
 
         return () => {
-            if (socket) {
-                socket.off("time:in");
-            }
+            socket?.off('time:in', onTimeInHandler);
+            socket?.disconnect();
         };
-    }, [onConnectionStatusChange, onTimeInHandler]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return { socket };
 }
