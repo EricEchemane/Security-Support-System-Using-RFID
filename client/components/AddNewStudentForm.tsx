@@ -182,7 +182,7 @@ export default function AddNewStudentForm(props: {
                         variant="outlined" />
                 </GridItem>
             </Grid>
-            <Stack justifyContent="flex-end" spacing={2} direction="row">
+            <Stack justifyContent="flex-end" spacing={2} direction="row" my={4}>
                 <Button size='large' variant='outlined' onClick={cancel}> Cancel </Button>
                 <Button type='submit' size='large' variant='contained'> Save </Button>
             </Stack>
