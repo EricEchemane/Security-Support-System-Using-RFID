@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import cors from "cors";
 import staffRoutes from "@routes/staff.routes";
 import timeInRoute from "@routes/time-in.route";
+import timeOutRoute from "@routes/time-out.route";
 
 const PORT = process.env.PORT || 4000;
 
@@ -18,6 +19,7 @@ app.use(express.json({ limit: '50mb' }));
 // routes
 app.use('/student', studentRoutes);
 app.use('/staff', staffRoutes);
+app.use('/time-out', timeOutRoute);
 app.use('/time-in', timeInRoute);
 
 const httpServer = http.createServer(app);
