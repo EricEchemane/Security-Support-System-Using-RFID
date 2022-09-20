@@ -1,4 +1,5 @@
-import { Container, Paper, Stack, Typography } from '@mui/material';
+/* eslint-disable @next/next/no-img-element */
+import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 import AddNewStaffForm from 'components/AddNewStaffForm';
 
 import SocketConnectionStatus from 'components/shared/SocketConnectionStatus';
@@ -13,6 +14,7 @@ type rfidStatusTypes = "untapped" | "used" | "available";
 export default function NewStaff() {
     const [connected, setConnected] = useState(false);
     const [rfidStatus, setRfidStatus] = useState<rfidStatusTypes>("untapped");
+    const [photoUrl, setPhotoUrl] = useState<string>('/student_photo_placeholder.jpg');
     const previousTappedRfid = useRef('');
     const adapter = useHttpAdapter(new HttpAdapter('/staff/:rfid', 'GET'), {
         onSuccess: () => setRfidStatus("used"),
@@ -30,17 +32,66 @@ export default function NewStaff() {
         setRfidStatus("untapped");
         previousTappedRfid.current = "";
     };
+    const selectFile = () => {
+        const inputPhoto = document.getElementById('input-photo');
+        if (!inputPhoto) return;
+        inputPhoto.click();
+    };
+    const handlePhotoChange = (e: any) => {
+        if (e.target.files.length === 0) return;
+
+        const files = e.target.files;
+        const file = files[0];
+
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+            alert('Please upload a valid image file');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = (e) => {
+            const base64Image = reader.result;
+            setPhotoUrl(base64Image as string);
+        };
+    };
 
     return <>
         <Head> <title> Add new staff </title> </Head>
         <Container>
             <Stack spacing={3} alignItems="flex-start" mt={3}>
                 <SocketConnectionStatus connected={connected} />
-                <Typography variant='h4'> New Staff • {previousTappedRfid.current} </Typography>
-                {rfidStatus === 'untapped' && <RfidStatus text='Tap an RFID first on the RFID reader to register' />}
-                {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid.current} is already used`} error />}
-                {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid.current} is available`} />}
-                {rfidStatus === 'available' && <AddNewStaffForm uid={previousTappedRfid.current} onReset={reset} />}
+                <Stack
+                    justifyContent='space-between'
+                    direction='row'
+                    width={'100%'}
+                    alignItems="flex-start">
+                    <Stack>
+                        <Typography variant='h4'> New Staff • {previousTappedRfid.current} </Typography>
+                        {rfidStatus === 'untapped' && <RfidStatus text='Tap an RFID first on the RFID reader to register' />}
+                        {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid.current} is already used`} error />}
+                        {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid.current} is available`} />}
+
+                    </Stack>
+                    {rfidStatus === 'available' &&
+                        <Button onClick={selectFile}>
+                            <Paper
+                                elevation={4}
+                                style={{ overflow: 'hidden', width: '150px', height: '150px' }}>
+                                <img
+                                    style={{
+                                        height: '100%',
+                                        width: '100%',
+                                    }}
+                                    src={photoUrl}
+                                    alt='photo url'
+                                    width={150}
+                                    height={150} />
+                            </Paper>
+                            <input type="file" hidden id='input-photo' onChange={handlePhotoChange} />
+                        </Button>}
+                </Stack>
+                {rfidStatus === 'available' && <AddNewStaffForm photo={photoUrl} uid={previousTappedRfid.current} onReset={reset} />}
             </Stack>
         </Container>
     </>;

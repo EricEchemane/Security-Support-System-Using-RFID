@@ -27,6 +27,7 @@ const style = {
 
 export default function AddNewStaffForm(props: {
     uid: string;
+    photo: string;
     onReset: () => void;
 }) {
     const [open, setOpen] = React.useState(false);
@@ -52,7 +53,7 @@ export default function AddNewStaffForm(props: {
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        adapter.execute({ payload: values });
+        adapter.execute({ payload: { ...values, photo: props.photo } });
     };
     const [teaching, setTeaching] = React.useState('Teaching');
     const handleTeachingChange = (event: SelectChangeEvent) => {
@@ -232,6 +233,7 @@ const formInitialValues: Staff = {
     lastName: '',
     middleName: '',
     nameExtension: '',
+    photo: '',
     birthDate: '03/29/2000',
     rfid: '',
     mobileNumber: '+63',

@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return <>
+
     <Head> <title> Security Support System Using RFID </title> </Head>
 
     <Container>
