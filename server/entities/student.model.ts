@@ -11,6 +11,10 @@ const StudentSchema = new mongoose.Schema({
             message: "Invalid email address"
         }
     },
+    photo: {
+        type: String,
+        required: [true, "Please add a photo"]
+    },
     firstName: {
         type: String,
         required: [true, "Please add a first name"],

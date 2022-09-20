@@ -7,6 +7,7 @@ export type Staff = {
     birthDate: String;
     rfid: string;
     mobileNumber: string;
+    photo: string;
     department: string;
     teaching: string;
     visitationRecords?: {

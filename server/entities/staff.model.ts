@@ -33,6 +33,10 @@ const StaffSchema = new mongoose.Schema({
         type: Date,
         required: [true, "Please add a birth date"],
     },
+    photo: {
+        type: String,
+        required: [true, "Please add a photo"]
+    },
     rfid: {
         type: String,
         required: [true, "Please add a rfid"],

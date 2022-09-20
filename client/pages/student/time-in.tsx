@@ -1,4 +1,5 @@
-import { Container, Stack, Typography } from "@mui/material";
+/* eslint-disable @next/next/no-img-element */
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import SocketConnectionStatus from "components/shared/SocketConnectionStatus";
 import dayjs from "dayjs";
 import useNotification from "hooks/useNotification";
@@ -39,24 +40,43 @@ export default function TimeIn() {
     return <>
         <Head> <title> Student Time-in </title> </Head>
         <Container>
-            <Stack spacing={3} alignItems="flex-start" mt={3}>
+            <Stack spacing={3} alignItems="flex-end" mt={3}>
                 <SocketConnectionStatus connected={connected} />
                 <Typography variant='h4'> Student Time-in: {formatTime(student)} </Typography>
             </Stack>
             {student && <Stack my={5}>
-                <Typography variant='h3'>
-                    {student.firstName} {student.middleName} {student.lastName} {student.nameExtension}
-                </Typography>
-                <Typography variant='button'>Email:{student.email}</Typography>
-                <Typography variant='button'>Birthday:{student.birthDate}</Typography>
-                <Typography variant='button'>RFID:{student.rfid}</Typography>
-                <Typography variant='button'>Mobile Number:{student.mobileNumber}</Typography>
-                <Typography variant='button'>Section:{student.section}</Typography>
-                <Typography variant='button'>Department:{student.department}</Typography>
-                <Typography variant='button'>Year Level:{student.yearLevel}</Typography>
-                <Typography variant='button'>Strand:{student.strand}</Typography>
-                <Typography variant='button'>Course:{student.course}</Typography>
-
+                <Stack
+                    width='100%'
+                    spacing={5}
+                    direction='row'>
+                    <Paper
+                        elevation={4}
+                        style={{ overflow: 'hidden', width: '280px', height: '280px' }}>
+                        <img
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                            }}
+                            src={student.photo}
+                            alt='photo url'
+                            width={150}
+                            height={150} />
+                    </Paper>
+                    <Stack>
+                        <Typography variant='h3'>
+                            {student.firstName} {student.middleName} {student.lastName} {student.nameExtension}
+                        </Typography>
+                        <Typography variant='button'>Email:{student.email}</Typography>
+                        <Typography variant='button'>Birthday:{student.birthDate}</Typography>
+                        <Typography variant='button'>RFID:{student.rfid}</Typography>
+                        <Typography variant='button'>Mobile Number:{student.mobileNumber}</Typography>
+                        <Typography variant='button'>Section:{student.section}</Typography>
+                        <Typography variant='button'>Department:{student.department}</Typography>
+                        <Typography variant='button'>Year Level:{student.yearLevel}</Typography>
+                        <Typography variant='button'>Strand:{student.strand}</Typography>
+                        <Typography variant='button'>Course:{student.course}</Typography>
+                    </Stack>
+                </Stack>
             </Stack>}
         </Container>
     </>;

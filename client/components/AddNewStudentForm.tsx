@@ -29,6 +29,7 @@ const style = {
 
 export default function AddNewStudentForm(props: {
     uid: string;
+    photo: string;
     onReset: () => void;
 }) {
     const [open, setOpen] = React.useState(false);
@@ -54,7 +55,7 @@ export default function AddNewStudentForm(props: {
     const cancel = () => router.replace('/');
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        adapter.execute({ payload: values });
+        adapter.execute({ payload: { ...values, photo: props.photo } });
     };
 
 

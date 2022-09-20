@@ -8,6 +8,7 @@ export type Student = {
     rfid: string;
     mobileNumber: string;
     section: string;
+    photo: string;
     department?: string;
     yearLevel: string;
     strand?: string;
