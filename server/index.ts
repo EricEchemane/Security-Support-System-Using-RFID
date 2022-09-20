@@ -35,6 +35,11 @@ io.on('connection', socket => {
         console.log('time:in: ', data);
         socket.broadcast.emit('time:in', { time: new Date(), uid: data.uid });
     });
+
+    socket.on('time:out', data => {
+        console.log('time:out: ', data);
+        socket.broadcast.emit('time:out', { time: new Date(), uid: data.uid });
+    });
 });
 
 httpServer.listen(PORT, () => {

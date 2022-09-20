@@ -39,10 +39,8 @@ const studentControllers = {
         if (!student) throw new RequestError(404, "Student not found");
 
         // check if student is already time in today
-        const today = new Date();
-        const todayDate = today.toISOString().split('T')[0];
-        const timeInToday = student.visitationRecords.find(record => record.date.toISOString().split('T')[0] === todayDate);
-        if (timeInToday) throw new RequestError(400, "You are already time in today");
+        const lastTimeIn = student.visitationRecords[student.visitationRecords.length - 1];
+        if (lastTimeIn && lastTimeIn.timeOut === null) throw new RequestError(400, "Student already time in");
 
         student.visitationRecords.push({
             date: new Date(),
@@ -51,6 +49,25 @@ const studentControllers = {
         });
         await student.save();
         return student;
+    },
+    timeOut: async (req: Request) => {
+        if (req.method !== 'POST') throw new RequestError(405, "Method not allowed");
+        const { rfid } = req.body;
+        if (!rfid) throw new RequestError(400, "RFID is required");
+
+        const db = await getDbConnection();
+        const { Student } = db.models;
+
+        const student = await Student.findByRfid(rfid);
+        if (!student) throw new RequestError(404, "Student not found");
+
+        const lastTimeIn = student.visitationRecords[student.visitationRecords.length - 1];
+        if (lastTimeIn && lastTimeIn.timeOut !== null) throw new RequestError(400, "Student already time out");
+        else {
+            lastTimeIn.timeOut = new Date();
+            await student.save();
+            return student;
+        }
     }
 };
 
