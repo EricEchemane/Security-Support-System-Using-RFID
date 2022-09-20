@@ -52,6 +52,7 @@ const StaffSchema = new mongoose.Schema({
     },
     typeOfStaff: {
         type: String,
+        required: [true, "Please add a type of staff"],
     },
     visitationRecords: [{
         date: Date,

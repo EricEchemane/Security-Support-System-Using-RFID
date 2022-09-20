@@ -38,8 +38,9 @@ export default function TimeIn() {
     }, setConnected);
 
     return <>
+
         <Head> <title> Student Time-in </title> </Head>
-        <Container>
+        <Container >
             <Stack spacing={3} alignItems="flex-end" mt={3}>
                 <SocketConnectionStatus connected={connected} />
                 <Typography variant='h4'> Student Time-in: {formatTime(student)} </Typography>
@@ -78,6 +79,10 @@ export default function TimeIn() {
                     </Stack>
                 </Stack>
             </Stack>}
+
         </Container>
+
     </>;
+
+
 }

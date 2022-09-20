@@ -9,7 +9,7 @@ export type Staff = {
     mobileNumber: string;
     photo: string;
     department: string;
-    teaching: string;
+    typeOfStaff: string;
     visitationRecords?: {
         date: Date,
         timeIn: Date,

@@ -223,6 +223,7 @@ const formInitialValues: Student = {
     lastName: '',
     middleName: '',
     nameExtension: '',
+    photo: '',
     birthDate: '03/29/2000',
     rfid: '',
     mobileNumber: '+63',

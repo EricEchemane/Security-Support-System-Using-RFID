@@ -58,7 +58,7 @@ export default function AddNewStaffForm(props: {
     const [teaching, setTeaching] = React.useState('Teaching');
     const handleTeachingChange = (event: SelectChangeEvent) => {
         setTeaching(event.target.value as string);
-        values.teaching = event.target.value;
+        values.typeOfStaff = event.target.value;
     };
 
     const [department, setDepartment] = React.useState('');
@@ -238,5 +238,5 @@ const formInitialValues: Staff = {
     rfid: '',
     mobileNumber: '+63',
     department: '',
-    teaching: 'Teaching',
+    typeOfStaff: 'Teaching',
 };

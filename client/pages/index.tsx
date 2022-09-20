@@ -21,7 +21,14 @@ export default function Home() {
         <Link passHref href={'/staff/new'}>
           <Button variant='contained'> Add new staff </Button>
         </Link>
+        <Link passHref href={'/staff/time-in'}>
+          <Button variant='contained'> Staff Time-in </Button>
+        </Link>
+        <Link passHref href={'/staff/time-out'}>
+          <Button variant='contained'> Staff Time-out </Button>
+        </Link>
       </Stack>
+
     </Container>
   </>;
 }

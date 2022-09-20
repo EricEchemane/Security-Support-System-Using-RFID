@@ -19,7 +19,9 @@ const studentControllers = {
     create: async (req: Request) => {
         if (req.method !== 'POST') throw new RequestError(405, "Method not allowed");
         const body: IStudent = req.body;
-
+        if (body.photo === "/student_photo_placeholder.jpg") {
+            throw new RequestError(400, "Photo is required");
+        }
         const db = await getDbConnection();
         const { Student } = db.models;
         const newStudent = new Student(body);
