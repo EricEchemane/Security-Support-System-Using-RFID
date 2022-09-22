@@ -32,7 +32,7 @@ export default function TimeIn() {
             const uid = data.uid;
             if (previousTappedRfid.current === uid) return;
             previousTappedRfid.current = uid;
-            const res = await fetch(url + "/staff/" + uid);
+            const res = await fetch(url + "/time-in/" + uid);
             const resData = await res.json();
             if (res.ok) setEntity(resData.data);
             else notify(resData.message, 'error');
