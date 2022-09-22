@@ -3,13 +3,14 @@ import { Container, Paper, Stack, Typography } from "@mui/material";
 import SocketConnectionStatus from "components/shared/SocketConnectionStatus";
 import dayjs from "dayjs";
 import useNotification from "hooks/useNotification";
-import useSocket from "hooks/useSocket";
-import HttpAdapter from "http_adapters/http-adapter-interface";
-import useHttpAdapter from "http_adapters/useHttpAdapter";
+import socketConfig from "lib/socketConfig";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
 import { Staff } from "types/staff.model";
 import { Student } from "types/student.model";
+
+let socket: Socket | null;
 
 const formatTime = (doc: Student | Staff | undefined | null) => {
     if (!doc || !doc.visitationRecords) return "";
@@ -21,22 +22,22 @@ export default function TimeIn() {
     const previousTappedRfid = useRef('');
     const [entity, setEntity] = useState<Student | Staff | null>();
     const notify = useNotification();
-    const adapter = useHttpAdapter(new HttpAdapter('/time-in/:rfid', 'GET'), {
-        onFailed: (message: string) => {
-            console.log(message);
-            notify(message, 'error');
-        },
-        onSuccess: (data) => {
-            setEntity(data.data);
-            console.log(data.data);
-        }
-    });
 
-    useSocket(data => {
-        // if (previousTappedRfid.current === data.uid) return;
-        previousTappedRfid.current = data.uid;
-        adapter.execute({ params: { rfid: data.uid } });
-    }, setConnected);
+    useEffect(() => {
+        const { url, options } = socketConfig;
+        socket = io(url, options);
+        socket.on("connect", () => setConnected(true));
+        socket.on("disconnect", () => setConnected(false));
+        socket.on("time:in", async data => {
+            const uid = data.uid;
+            if (previousTappedRfid.current === uid) return;
+            previousTappedRfid.current = uid;
+            const res = await fetch(url + "/staff/" + uid);
+            const resData = await res.json();
+            if (res.ok) setEntity(resData.data);
+            else notify(resData.message, 'error');
+        });
+    }, [notify]);
 
     return <>
 
