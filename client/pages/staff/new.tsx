@@ -1,13 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 import AddNewStaffForm from 'components/AddNewStaffForm';
-
 import SocketConnectionStatus from 'components/shared/SocketConnectionStatus';
-import useSocket from 'hooks/useSocket';
-import HttpAdapter from 'http_adapters/http-adapter-interface';
-import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import socketConfig from 'lib/socketConfig';
 import Head from 'next/head';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import io, { Socket } from "socket.io-client";
+
+let socket: Socket | null;
 
 type rfidStatusTypes = "untapped" | "used" | "available";
 
@@ -16,18 +16,22 @@ export default function NewStaff() {
     const [rfidStatus, setRfidStatus] = useState<rfidStatusTypes>("untapped");
     const [photoUrl, setPhotoUrl] = useState<string>('/student_photo_placeholder.jpg');
     const previousTappedRfid = useRef('');
-    const adapter = useHttpAdapter(new HttpAdapter('/staff/:rfid', 'GET'), {
-        onSuccess: () => setRfidStatus("used"),
-        onFailed: () => setRfidStatus("available"),
-    });
 
-    useSocket(data => {
-        if (previousTappedRfid.current === data.uid) return;
-        previousTappedRfid.current = data.uid;
-        adapter.execute({
-            params: { rfid: data.uid }
+    useEffect(() => {
+        const { url, options } = socketConfig;
+        socket = io(url, options);
+        socket.on("connect", () => setConnected(true));
+        socket.on("disconnect", () => setConnected(false));
+        socket.on("time:in", async data => {
+            const uid = data.uid;
+            if (previousTappedRfid.current === uid) return;
+            previousTappedRfid.current = uid;
+            const res = await fetch(url + "/staff/" + uid);
+            if (res.ok) setRfidStatus("used");
+            else setRfidStatus("available");
         });
-    }, setConnected);
+    }, []);
+
     const reset = () => {
         setRfidStatus("untapped");
         previousTappedRfid.current = "";

@@ -9,7 +9,10 @@ const staffControllers = {
         if (!rfid) throw new RequestError(400, "RFID is required");
 
         const db = await getDbConnection();
-        const { Staff } = db.models;
+        const { Staff, Student } = db.models;
+
+        const student = await Student.findByRfid(rfid);
+        if (student) return student;
 
         const staff = await Staff.findByRfid(rfid);
         if (!staff) throw new RequestError(404, "Staff not found");
@@ -25,7 +28,11 @@ const staffControllers = {
         }
 
         const db = await getDbConnection();
-        const { Staff } = db.models;
+        const { Staff, Student } = db.models;
+
+        const student = await Student.findByRfid(body.rfid);
+        if (student) throw new RequestError(400, "RFID already used by a student");
+
         const newStaff = new Staff(body);
 
         await newStaff.save();
