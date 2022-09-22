@@ -30,7 +30,8 @@ export default function normalize(
                 const idx1 = (error.message as string).indexOf(':');
                 const idx2 = (error.message as string).indexOf(':', idx1 + 1);
                 const idx3 = (error.message as string).indexOf(',');
-                error.message = (error.message as string).substring(idx2 + 2, idx3);
+                if (idx3 !== -1) error.message = (error.message as string).substring(idx2 + 2, idx3);
+                else error.message = (error.message as string).substring(idx2 + 2);
             }
             if (error instanceof RequestError) {
                 return res.status(error.code).json(error);

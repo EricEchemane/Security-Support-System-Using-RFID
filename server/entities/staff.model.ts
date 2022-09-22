@@ -49,6 +49,7 @@ const StaffSchema = new mongoose.Schema({
     },
     department: {
         type: String,
+        required: [true, "Please specify a department"],
     },
     typeOfStaff: {
         type: String,
