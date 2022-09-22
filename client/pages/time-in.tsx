@@ -13,7 +13,7 @@ import { Student } from "types/student.model";
 let socket: Socket | null;
 
 const formatTime = (doc: Student | Staff | undefined | null) => {
-    if (!doc || !doc.visitationRecords) return "";
+    if (!doc || !doc.visitationRecords || doc.visitationRecords.length === 0) return "";
     return dayjs(doc.visitationRecords[doc.visitationRecords?.length - 1].timeIn.toString()).format("hh:mm a");
 };
 
