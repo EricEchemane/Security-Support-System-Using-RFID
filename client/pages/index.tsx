@@ -30,6 +30,9 @@ export default function Home() {
         <Link passHref href={'/time-in'}>
           <Button variant='outlined'> Time-in </Button>
         </Link>
+        <Link passHref href={'/time-out'}>
+          <Button variant='outlined'> Time-out </Button>
+        </Link>
       </Stack>
 
     </Container>
