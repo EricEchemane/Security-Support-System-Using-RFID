@@ -1,0 +1,28 @@
+{
+  "name": "security-support-system-using-rfid",
+  "version": "1.0.0",
+  "description": "[Reference for wirings](https://www.aranacorp.com/en/using-an-rfid-module-with-an-esp8266/)",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm run build && npm start",
+    "server": "cd server && npm run bs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricEchemane/Security-Support-System-Using-RFID.git"
+  },
+  "keywords": [
+    "rfid",
+    "attendance",
+    "system",
+    "socket",
+    "nodemcu",
+    "esp8266"
+  ],
+  "author": "Eric Echemane",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EricEchemane/Security-Support-System-Using-RFID/issues"
+  },
+  "homepage": "https://github.com/EricEchemane/Security-Support-System-Using-RFID#readme"
+}
