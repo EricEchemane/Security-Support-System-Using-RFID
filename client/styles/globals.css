@@ -1,5 +1,5 @@
 body {
-  background-image: url(http://localhost:3000/assets/building.jpg);
+  background-image: url(/assets/building.jpg);
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
