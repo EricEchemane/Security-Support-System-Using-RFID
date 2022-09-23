@@ -12,6 +12,7 @@ export default function Document() {
                     rel="stylesheet"
                     href="https://fonts.googleapis.com/icon?family=Material+Icons"
                 />
+                <link rel="icon" href="/assets/logo.png" />
             </Head>
             <body>
                 <Main />
