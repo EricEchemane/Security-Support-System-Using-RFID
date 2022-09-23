@@ -1,5 +1,5 @@
 const socketConfig = Object.freeze({
-    url: 'http://localhost:4000',
+    url: process.env.NODE_ENV === 'production' ? 'https://sbca-server.herokuapp.com' : 'http://localhost:4000',
     options: {
         transports: ['websocket'],
     },
