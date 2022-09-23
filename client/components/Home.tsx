@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { Email, Phone, Language, LocationOn } from '@mui/icons-material';
 import { Button, Container, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 export default function HomePage() {
+    const router = useRouter();
     return <>
         <div id='home-background'>
             <Container style={{ maxWidth: "1300px" }}>
@@ -46,6 +48,7 @@ export default function HomePage() {
                                         spacing={4}
                                         justifyContent="stretch">
                                         <Button
+                                            onClick={() => router.push("/student")}
                                             fullWidth
                                             variant='contained'
                                             style={{
@@ -54,6 +57,7 @@ export default function HomePage() {
                                                 borderRadius: ".5rem"
                                             }}> Student </Button>
                                         <Button
+                                            onClick={() => router.push("/staff")}
                                             fullWidth
                                             variant='contained'
                                             style={{
