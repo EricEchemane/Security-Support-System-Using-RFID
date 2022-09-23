@@ -8,6 +8,7 @@ import cors from "cors";
 import staffRoutes from "@routes/staff.routes";
 import timeInRoute from "@routes/time-in.route";
 import timeOutRoute from "@routes/time-out.route";
+import loginRoute from "@routes/login.route";
 
 const PORT = process.env.PORT || 4000;
 
@@ -21,6 +22,7 @@ app.use('/student', studentRoutes);
 app.use('/staff', staffRoutes);
 app.use('/time-out', timeOutRoute);
 app.use('/time-in', timeInRoute);
+app.use('/admin-login', loginRoute);
 
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
