@@ -79,10 +79,6 @@ export default function TimeIn() {
                     </Stack>
                 </Stack>
             </Stack>}
-
         </Container>
-
     </>;
-
-
 }
