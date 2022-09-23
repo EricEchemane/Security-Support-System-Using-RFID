@@ -18,7 +18,7 @@
 // const char* ip = "192.168.254.100";
 const char *ssid = "ZTE_2.4G_zncMNd";
 const char *pass = "iLyCfbAc";
-const char *ip = "192.168.1.4";
+const char *ip = "sbca-server.herokuapp.com";
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
@@ -37,7 +37,7 @@ void setup()
   searchWiFi();
   connectWiFi();
 
-  webSocket.begin(ip, 4000);
+  webSocket.begin(ip, 80);
 
   // init rfid
   SPI.begin();
@@ -92,7 +92,7 @@ void loop()
   USER_SERIAL.print(tag);
   USER_SERIAL.println();
 
-  String output = "[\"time:out\",{\"uid\":\"" + tag + "\"}]";
+  String output = "[\"time:in\",{\"uid\":\"" + tag + "\"}]";
   webSocket.sendEVENT(output);
   USER_SERIAL.println();
 
