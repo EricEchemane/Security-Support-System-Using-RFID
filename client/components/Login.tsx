@@ -2,6 +2,7 @@ import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import React, { FormEvent, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import useNotification from 'hooks/useNotification';
+import socketConfig from 'lib/socketConfig';
 
 export default function Login(props: {
     onLoggedInSuccess: () => void;
@@ -11,7 +12,8 @@ export default function Login(props: {
     const [password, setPassword] = useState("");
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const res = await fetch("http://localhost:4000/admin-login", {
+        const { url } = socketConfig;
+        const res = await fetch(url + "/admin-login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password })
