@@ -46,10 +46,7 @@ export default function AddNewStudentForm(props: {
         values.birthDate = newValue?.format('MM/DD/YYYY');
     };
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'POST'), {
-        onSuccess: () => {
-            //  notify('Student successfully created', 'success');
-            handleOpen();
-        },
+        onSuccess: handleOpen,
         onFailed: msg => notify(msg, 'error')
     });
     const cancel = () => router.replace('/');
@@ -71,7 +68,7 @@ export default function AddNewStudentForm(props: {
                         name="firstName"
                         value={values.firstName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -81,7 +78,7 @@ export default function AddNewStudentForm(props: {
                         name="middleName"
                         value={values.middleName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -91,7 +88,7 @@ export default function AddNewStudentForm(props: {
                         name="lastName"
                         value={values.lastName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -101,7 +98,7 @@ export default function AddNewStudentForm(props: {
                         name="nameExtension"
                         value={values.nameExtension}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <MobileDatePicker
@@ -109,7 +106,7 @@ export default function AddNewStudentForm(props: {
                         inputFormat="MM/DD/YYYY"
                         value={birthDate}
                         onChange={handleBirthDateChange}
-                        renderInput={(params) => <TextField fullWidth required {...params} />}
+                        renderInput={(params) => <TextField variant='filled' fullWidth required {...params} />}
                     />
                 </GridItem>
                 <GridItem>
@@ -120,7 +117,7 @@ export default function AddNewStudentForm(props: {
                         name="mobileNumber"
                         value={values.mobileNumber}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -130,7 +127,7 @@ export default function AddNewStudentForm(props: {
                         name="email"
                         value={values.email}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -140,7 +137,7 @@ export default function AddNewStudentForm(props: {
                         name="section"
                         value={values.section}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -150,7 +147,7 @@ export default function AddNewStudentForm(props: {
                         name="department"
                         value={values.department}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -160,7 +157,7 @@ export default function AddNewStudentForm(props: {
                         name="yearLevel"
                         value={values.yearLevel}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -170,7 +167,7 @@ export default function AddNewStudentForm(props: {
                         name="strand"
                         value={values.strand}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -180,7 +177,7 @@ export default function AddNewStudentForm(props: {
                         name="course"
                         value={values.course}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
             </Grid>
             <Stack justifyContent="flex-end" spacing={2} direction="row" my={4}>

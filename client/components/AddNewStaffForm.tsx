@@ -44,10 +44,7 @@ export default function AddNewStaffForm(props: {
         values.birthDate = newValue?.format('MM/DD/YYYY');
     };
     const adapter = useHttpAdapter(new HttpAdapter('/staff', 'POST'), {
-        onSuccess: () => {
-            //  notify('Student successfully created', 'success');
-            handleOpen();
-        },
+        onSuccess: handleOpen,
         onFailed: msg => notify(msg, 'error')
     });
     const cancel = () => router.replace('/');
@@ -79,7 +76,7 @@ export default function AddNewStaffForm(props: {
                         name="firstName"
                         value={values.firstName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -89,7 +86,7 @@ export default function AddNewStaffForm(props: {
                         name="middleName"
                         value={values.middleName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -99,7 +96,7 @@ export default function AddNewStaffForm(props: {
                         name="lastName"
                         value={values.lastName}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -109,7 +106,7 @@ export default function AddNewStaffForm(props: {
                         name="nameExtension"
                         value={values.nameExtension}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <MobileDatePicker
@@ -117,7 +114,7 @@ export default function AddNewStaffForm(props: {
                         inputFormat="MM/DD/YYYY"
                         value={birthDate}
                         onChange={handleBirthDateChange}
-                        renderInput={(params) => <TextField fullWidth required {...params} />}
+                        renderInput={(params) => <TextField variant='filled' fullWidth required {...params} />}
                     />
                 </GridItem>
                 <GridItem>
@@ -128,7 +125,7 @@ export default function AddNewStaffForm(props: {
                         name="mobileNumber"
                         value={values.mobileNumber}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
                 <GridItem>
                     <TextField
@@ -138,13 +135,14 @@ export default function AddNewStaffForm(props: {
                         name="email"
                         value={values.email}
                         onChange={handleChange}
-                        variant="outlined" />
+                        variant="filled" />
                 </GridItem>
 
                 <GridItem>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Type of Staff</InputLabel>
                         <Select
+                            variant='filled'
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={teaching}
@@ -160,6 +158,7 @@ export default function AddNewStaffForm(props: {
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">Teaching Department</InputLabel>
                             <Select
+                                variant='filled'
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={department}
@@ -181,6 +180,7 @@ export default function AddNewStaffForm(props: {
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">Non Teaching Department</InputLabel>
                             <Select
+                                variant='filled'
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={department}
