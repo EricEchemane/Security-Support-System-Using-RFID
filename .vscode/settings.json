@@ -5,6 +5,5 @@
     "server\\node_modules": true,
     "client\\.next": true,
     "client\\node_modules": true,
-    "client\\styles": true
   }
 }
