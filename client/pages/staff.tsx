@@ -11,6 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 const formatTime = (staff: Staff | undefined | null, time: "in" | "out") => {
     if (!staff || !staff.visitationRecords || staff.visitationRecords.length === 0) return "none";
     const visit = staff.visitationRecords[staff.visitationRecords.length - 1];
@@ -57,7 +59,8 @@ export default function StaffPage() {
                             <TableCell> Type of staff </TableCell>
                             <TableCell> Last Time in </TableCell>
                             <TableCell> Last Time Out </TableCell>
-                            <TableCell> Action </TableCell>
+                            <TableCell align='center'> Action </TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -78,7 +81,12 @@ export default function StaffPage() {
                                 <TableCell component="th" scope="row"> {formatTime(staff, "in")} </TableCell>
                                 <TableCell component="th" scope="row"> {formatTime(staff, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
-                                    <Button variant='outlined'> Edit </Button>
+                                    <Stack direction={"row"}>
+                                        <Button variant='outlined'> Edit </Button>
+                                        <IconButton color="primary" aria-label="delete">
+                                            <DeleteForeverOutlinedIcon />
+                                        </IconButton>
+                                    </Stack>
                                 </TableCell>
                             </TableRow>
                         ))}

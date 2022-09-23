@@ -11,6 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 const formatTime = (student: Student | undefined | null, time: "in" | "out") => {
     if (!student || !student.visitationRecords || student.visitationRecords.length === 0) return "none";
@@ -86,7 +88,12 @@ export default function StudentPage() {
                                 <TableCell component="th" scope="row"> {formatTime(student, "in")} </TableCell>
                                 <TableCell component="th" scope="row"> {formatTime(student, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
-                                    <Button variant='outlined'> Edit </Button>
+                                    <Stack direction={"row"}>
+                                        <Button variant='outlined'> Edit </Button>
+                                        <IconButton color="primary" aria-label="delete">
+                                            <DeleteForeverOutlinedIcon />
+                                        </IconButton>
+                                    </Stack>
                                 </TableCell>
                             </TableRow>
                         ))}
