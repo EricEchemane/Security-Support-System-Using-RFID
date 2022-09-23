@@ -1,7 +1,13 @@
+import { Container } from '@mui/material';
+import Head from 'next/head';
 import React from 'react';
 
 export default function Student() {
-    return (
-        <div>student</div>
-    );
+    return <>
+        <Head> <title> Students </title> </Head>
+
+        <Container>
+
+        </Container>
+    </>;
 }

@@ -20,7 +20,7 @@ export default function normalize(
             return res.status(200).json(new SuccessfulRequest(data));
 
         } catch (error: any) {
-            console.error('\n\n==> Error from:', req.url);
+            console.error('\n\n==> Error from:', req.originalUrl);
             console.error(error.message);
 
             if (error.message.includes('E11000')) {

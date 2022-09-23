@@ -15,7 +15,7 @@ export default function NewStudent() {
     const [connected, setConnected] = useState(false);
     const [photoUrl, setPhotoUrl] = useState<string>('/student_photo_placeholder.jpg');
     const [rfidStatus, setRfidStatus] = useState<rfidStatusTypes>("untapped");
-    const previousTappedRfid = useRef('');
+    const [previousTappedRfid, setPreviousTappedRfid] = useState("");
 
     useEffect(() => {
         const { url, options } = socketConfig;
@@ -24,17 +24,18 @@ export default function NewStudent() {
         socket.on("disconnect", () => setConnected(false));
         socket.on("time:in", async data => {
             const uid = data.uid;
-            if (previousTappedRfid.current === uid) return;
-            previousTappedRfid.current = uid;
-            const res = await fetch(url + "/staff/" + uid);
+            if (previousTappedRfid === uid) return;
+            setPreviousTappedRfid(uid);
+            const res = await fetch(url + "/student/" + uid);
             if (res.ok) setRfidStatus("used");
             else setRfidStatus("available");
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const reset = () => {
         setRfidStatus("untapped");
-        previousTappedRfid.current = "";
+        setPreviousTappedRfid("");
     };
     const selectFile = () => {
         const inputPhoto = document.getElementById('input-photo');
@@ -71,10 +72,10 @@ export default function NewStudent() {
                     width={'100%'}
                     alignItems="flex-start">
                     <Stack>
-                        <Typography variant='h4'> New Student • {previousTappedRfid.current} </Typography>
+                        <Typography variant='h4'> New Student • {previousTappedRfid} </Typography>
                         {rfidStatus === 'untapped' && <RfidStatus text='Tap an RFID first on the RFID reader to register' />}
-                        {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid.current} is already used`} error />}
-                        {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid.current} is available`} />}
+                        {rfidStatus === 'used' && <RfidStatus text={`This RFID with code: ${previousTappedRfid} is already used`} error />}
+                        {rfidStatus === 'available' && <RfidStatus text={`${previousTappedRfid} is available`} />}
                     </Stack>
                     {rfidStatus === 'available' &&
                         <Button onClick={selectFile}>
@@ -94,7 +95,7 @@ export default function NewStudent() {
                             <input type="file" hidden id='input-photo' onChange={handlePhotoChange} />
                         </Button>}
                 </Stack>
-                {rfidStatus === 'available' && <AddNewStudentForm photo={photoUrl} uid={previousTappedRfid.current} onReset={reset} />}
+                {rfidStatus === 'available' && <AddNewStudentForm photo={photoUrl} uid={previousTappedRfid} onReset={reset} />}
             </Stack>
         </Container>
     </>;
