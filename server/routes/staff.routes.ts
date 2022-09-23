@@ -6,6 +6,7 @@ const staffRoutes = Router();
 staffRoutes.post("/time-in", normalize(staffControllers.timeIn));
 staffRoutes.post("/time-out", normalize(staffControllers.timeOut));
 staffRoutes.get("/:rfid", normalize(staffControllers.getByRfid));
+staffRoutes.get("/get/all", normalize(staffControllers.getAll));
 staffRoutes.post("/", normalize(staffControllers.create));
 
 export default staffRoutes;

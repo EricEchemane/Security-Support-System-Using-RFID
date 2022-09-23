@@ -4,6 +4,13 @@ import { RequestError } from "@utils/request";
 import { Request } from "express";
 
 const staffControllers = {
+
+    getAll: async (req: Request) => {
+        const db = await getDbConnection();
+        const { Staff } = db.models;
+        const staff = await Staff.find();
+        return staff;
+    },
     getByRfid: async (req: Request) => {
         const { rfid } = req.params;
         if (!rfid) throw new RequestError(400, "RFID is required");
