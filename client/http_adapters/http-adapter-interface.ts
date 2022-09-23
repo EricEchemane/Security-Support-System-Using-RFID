@@ -1,9 +1,13 @@
+import socketConfig from "lib/socketConfig";
+
+const { url: socketUrl } = socketConfig;
+
 export default class HttpAdapter {
     url: string;
     method: string;
 
     constructor(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH') {
-        this.url = "http://localhost:4000" + url;
+        this.url = socketUrl + url;
         this.method = method;
     }
 

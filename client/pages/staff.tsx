@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import socketConfig from 'lib/socketConfig';
 const formatTime = (staff: Staff | undefined | null, time: "in" | "out") => {
     if (!staff || !staff.visitationRecords || staff.visitationRecords.length === 0) return "none";
     const visit = staff.visitationRecords[staff.visitationRecords.length - 1];
@@ -26,7 +27,8 @@ const formatTime = (staff: Staff | undefined | null, time: "in" | "out") => {
     }
 };
 const getStaff = async () => {
-    const res = await fetch("http://localhost:4000/staff/get/all");
+    const { url } = socketConfig;
+    const res = await fetch(url + "/staff/get/all");
     const data = await res.json();
     if (res.ok) return data.data;
     return [];

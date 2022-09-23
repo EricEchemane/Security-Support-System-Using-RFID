@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import socketConfig from 'lib/socketConfig';
 
 const formatTime = (student: Student | undefined | null, time: "in" | "out") => {
     if (!student || !student.visitationRecords || student.visitationRecords.length === 0) return "none";
@@ -27,7 +28,8 @@ const formatTime = (student: Student | undefined | null, time: "in" | "out") => 
     }
 };
 const getStudents = async () => {
-    const res = await fetch("http://localhost:4000/student/get/all");
+    const { url } = socketConfig;
+    const res = await fetch(url + "/student/get/all");
     const data = await res.json();
     if (res.ok) return data.data;
     return [];
