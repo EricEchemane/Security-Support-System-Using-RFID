@@ -1,3 +1,4 @@
+import socketConfig from "lib/socketConfig";
 import { useEffect } from "react";
 import io, { Socket } from "socket.io-client";
 
@@ -12,13 +13,15 @@ export interface OnTimeOutHandler {
     (data: timeOutData): void;
 }
 
+const { url } = socketConfig;
+
 export default function useSocket(
     onTimeInHandler: OnTimeInHandler,
     onConnectionStatusChange: (connected: boolean) => void,
     onTimeOutHandler: OnTimeOutHandler = (data: timeOutData) => { },
 ) {
     useEffect(() => {
-        socket = io("http://localhost:4000", {
+        socket = io(url, {
             transports: ['websocket']
         });
 
