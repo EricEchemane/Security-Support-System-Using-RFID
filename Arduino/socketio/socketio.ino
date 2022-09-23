@@ -92,7 +92,7 @@ void loop()
   USER_SERIAL.print(tag);
   USER_SERIAL.println();
 
-  String output = "[\"time:in\",{\"uid\":\"" + tag + "\"}]";
+  String output = "[\"time:out\",{\"uid\":\"" + tag + "\"}]";
   webSocket.sendEVENT(output);
   USER_SERIAL.println();
 

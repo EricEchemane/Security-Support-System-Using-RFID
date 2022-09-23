@@ -74,7 +74,8 @@ export default function TimeIn() {
                         <Typography variant='button'>RFID:{entity.rfid}</Typography>
                         <Typography variant='button'>Mobile Number:{entity.mobileNumber}</Typography>
                         {(entity as any).section && <Typography variant='button'>Section:{(entity as any).section}</Typography>}
-                        <Typography variant='button'>Department:{entity.department}</Typography>
+                        {(entity as any).typeOfStaff && <Typography variant='button'>Type of Staff: {(entity as any).typeOfStaff}</Typography>}
+                        <Typography variant='button'>Department: {entity.department}</Typography>
                         {(entity as any).yearLevel && <Typography variant='button'>Year Level:{(entity as any).yearLevel}</Typography>}
                         {(entity as any).strand && <Typography variant='button'>Strand:{(entity as any).strand}</Typography>}
                         {(entity as any).course && <Typography variant='button'>Course:{(entity as any).course}</Typography>}
