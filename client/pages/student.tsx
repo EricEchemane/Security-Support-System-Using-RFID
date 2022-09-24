@@ -14,6 +14,7 @@ import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import socketConfig from 'lib/socketConfig';
+import useLoadingIndicator from 'hooks/useLoadingIndicator';
 
 const formatTime = (student: Student | undefined | null, time: "in" | "out") => {
     if (!student || !student.visitationRecords || student.visitationRecords.length === 0) return "none";
@@ -37,9 +38,14 @@ const getStudents = async () => {
 
 export default function StudentPage() {
     const [students, setStudents] = useState<Student[]>([]);
-
+    const loadingIndicator = useLoadingIndicator();
     useEffect(() => {
-        getStudents().then(setStudents);
+        loadingIndicator.setVisibility(true);
+        getStudents().then(data => {
+            setStudents(data);
+            loadingIndicator.setVisibility(false);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <>

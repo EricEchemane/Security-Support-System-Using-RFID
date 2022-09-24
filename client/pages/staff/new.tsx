@@ -2,6 +2,7 @@
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
 import AddNewStaffForm from 'components/AddNewStaffForm';
 import SocketConnectionStatus from 'components/shared/SocketConnectionStatus';
+import useLoadingIndicator from 'hooks/useLoadingIndicator';
 import socketConfig from 'lib/socketConfig';
 import Head from 'next/head';
 import { useEffect, useRef, useState } from 'react';
@@ -16,6 +17,7 @@ export default function NewStaff() {
     const [rfidStatus, setRfidStatus] = useState<rfidStatusTypes>("untapped");
     const [photoUrl, setPhotoUrl] = useState<string>('/student_photo_placeholder.jpg');
     const [previousTappedRfid, setPreviousTappedRfid] = useState("");
+    const loadingIndicator = useLoadingIndicator();
 
     useEffect(() => {
         const { url, options } = socketConfig;
@@ -25,10 +27,12 @@ export default function NewStaff() {
         socket.on("time:in", async data => {
             const uid = data.uid;
             if (previousTappedRfid === uid) return;
+            loadingIndicator.setVisibility(true);
             setPreviousTappedRfid(uid);
             const res = await fetch(url + "/staff/" + uid);
             if (res.ok) setRfidStatus("used");
             else setRfidStatus("available");
+            loadingIndicator.setVisibility(false);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -1,3 +1,4 @@
+import useLoadingIndicator from "hooks/useLoadingIndicator";
 import { useCallback, useState } from "react";
 import HttpAdapter from "./http-adapter-interface";
 
@@ -13,6 +14,7 @@ export default function useHttpAdapter<PayloadType, ParamsType>(
     const [response, setResponse] = useState<any>();
     const [error, setError] = useState<any | null>();
     const [data, setData] = useState<any | null>();
+    const loadingIndicator = useLoadingIndicator();
 
     const execute = useCallback(async (options: {
         payload?: PayloadType,
@@ -34,6 +36,7 @@ export default function useHttpAdapter<PayloadType, ParamsType>(
         let response: any;
 
         try {
+            loadingIndicator.setVisibility(true);
             if (adapter.method === 'GET') {
                 response = await fetch(adapter.url);
             }
@@ -63,8 +66,9 @@ export default function useHttpAdapter<PayloadType, ParamsType>(
             callbacks.onFailed(error?.message || response.statusText);
         } finally {
             setLoading(false);
+            loadingIndicator.setVisibility(false);
         }
-    }, [adapter, callbacks]);
+    }, [adapter, callbacks, loadingIndicator]);
 
     return {
         loading, data, error, response, execute

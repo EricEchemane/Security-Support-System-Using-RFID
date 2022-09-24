@@ -2,6 +2,7 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import SocketConnectionStatus from "components/shared/SocketConnectionStatus";
 import dayjs from "dayjs";
+import useLoadingIndicator from "hooks/useLoadingIndicator";
 import useNotification from "hooks/useNotification";
 import socketConfig from "lib/socketConfig";
 import Head from "next/head";
@@ -22,6 +23,7 @@ export default function TimeIn() {
     const previousTappedRfid = useRef('');
     const [entity, setEntity] = useState<Student | Staff | null>();
     const notify = useNotification();
+    const loadingIndicator = useLoadingIndicator();
 
     useEffect(() => {
         const { url, options } = socketConfig;
@@ -31,13 +33,15 @@ export default function TimeIn() {
         socket.on("time:in", async data => {
             const uid = data.uid;
             if (previousTappedRfid.current === uid) return;
+            loadingIndicator.setVisibility(true);
             previousTappedRfid.current = uid;
             const res = await fetch(url + "/time-in/" + uid);
             const resData = await res.json();
             if (res.ok) setEntity(resData.data);
             else notify(resData.message, 'error');
+            loadingIndicator.setVisibility(false);
         });
-    }, [notify]);
+    }, [loadingIndicator, notify]);
 
     return <>
 

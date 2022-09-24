@@ -14,6 +14,7 @@ import Link from 'next/link';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import socketConfig from 'lib/socketConfig';
+import useLoadingIndicator from 'hooks/useLoadingIndicator';
 const formatTime = (staff: Staff | undefined | null, time: "in" | "out") => {
     if (!staff || !staff.visitationRecords || staff.visitationRecords.length === 0) return "none";
     const visit = staff.visitationRecords[staff.visitationRecords.length - 1];
@@ -36,8 +37,14 @@ const getStaff = async () => {
 
 export default function StaffPage() {
     const [staff, setStaff] = useState<Staff[]>([]);
+    const loadingIndicator = useLoadingIndicator();
     useEffect(() => {
-        getStaff().then(setStaff);
+        loadingIndicator.setVisibility(true);
+        getStaff().then(data => {
+            setStaff(data);
+            loadingIndicator.setVisibility(false);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <>

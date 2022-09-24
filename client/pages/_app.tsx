@@ -3,6 +3,7 @@ import { NotificationProvider } from 'hooks/useNotification';
 import type { AppProps } from 'next/app';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { LoadingIndicatorProvider } from 'hooks/useLoadingIndicator';
 
 const darkTheme = createTheme({
   palette: {
@@ -18,7 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <NotificationProvider>
-        <Component {...pageProps} />
+        <LoadingIndicatorProvider>
+          <Component {...pageProps} />
+        </LoadingIndicatorProvider>
       </NotificationProvider>
     </ThemeProvider>
 

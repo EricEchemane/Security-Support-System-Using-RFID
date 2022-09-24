@@ -3,14 +3,17 @@ import React, { FormEvent, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import useNotification from 'hooks/useNotification';
 import socketConfig from 'lib/socketConfig';
+import useLoadingIndicator from 'hooks/useLoadingIndicator';
 
 export default function Login(props: {
     onLoggedInSuccess: () => void;
 }) {
     const notify = useNotification();
+    const loadingIndicator = useLoadingIndicator();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const handleSubmit = async (e: FormEvent) => {
+        loadingIndicator.setVisibility(true);
         e.preventDefault();
         const { url } = socketConfig;
         const res = await fetch(url + "/admin-login", {
@@ -24,6 +27,7 @@ export default function Login(props: {
             notify("Login successful", "success");
         }
         else notify(data.message, "error");
+        loadingIndicator.setVisibility(false);
     };
     return <>
         <Container maxWidth="sm">
@@ -48,7 +52,12 @@ export default function Login(props: {
                         label="Password"
                         type="password"
                         variant="filled" />
-                    <Button type='submit' size='large' fullWidth variant='contained'> Login </Button>
+                    <Button
+                        disabled={loadingIndicator.isVisible}
+                        type='submit'
+                        size='large'
+                        fullWidth
+                        variant='contained'> Login </Button>
                 </Stack>
             </form>
         </Container>
