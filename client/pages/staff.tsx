@@ -16,6 +16,10 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import socketConfig from 'lib/socketConfig';
 import useLoadingIndicator from 'hooks/useLoadingIndicator';
 import { useRouter } from 'next/router';
+import useConfirmDialog from 'hooks/useConfirmDialog';
+import useNotification from 'hooks/useNotification';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import HttpAdapter from 'http_adapters/http-adapter-interface';
 const formatTime = (staff: Staff | undefined | null, time: "in" | "out") => {
     if (!staff || !staff.visitationRecords || staff.visitationRecords.length === 0) return "none";
     const visit = staff.visitationRecords[staff.visitationRecords.length - 1];
@@ -40,6 +44,12 @@ export default function StaffPage() {
     const [staff, setStaff] = useState<Staff[]>([]);
     const loadingIndicator = useLoadingIndicator();
     const router = useRouter();
+    const confirmDialog = useConfirmDialog();
+    const notify = useNotification();
+    const adapter = useHttpAdapter(new HttpAdapter('/staff', 'DELETE'), {
+        onFailed: message => notify(message, 'error'),
+        onSuccess: () => notify('Deleted successfully', 'success')
+    });
 
     useEffect(() => {
         const sessionKey = "sbca-admin";
@@ -55,6 +65,18 @@ export default function StaffPage() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const confirmDelete = (rfid: string) => {
+        confirmDialog.confirm({
+            title: "Delete this staff?",
+            message: "This action is irreversable. Once deleted, it cannot be undone.",
+            confirmText: "Delete anyway",
+            cancelText: "Cancel",
+            onConfirm() {
+                adapter.execute({ payload: { rfid } });
+            },
+        });
+    };
 
     return <>
         <Head> <title> Staff </title> </Head>
@@ -103,7 +125,10 @@ export default function StaffPage() {
                                         <Link href={`/staff/edit/${staff.rfid}`} passHref>
                                             <Button variant='outlined'> Edit </Button>
                                         </Link>
-                                        <IconButton color="primary" aria-label="delete">
+                                        <IconButton
+                                            onClick={() => confirmDelete(staff.rfid)}
+                                            color="primary"
+                                            aria-label="delete">
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>
                                     </Stack>
