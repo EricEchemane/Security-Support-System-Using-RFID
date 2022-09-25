@@ -96,7 +96,7 @@ export default function StudentPage() {
                                 <TableCell component="th" scope="row"> {formatTime(student, "in")} </TableCell>
                                 <TableCell component="th" scope="row"> {formatTime(student, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
-                                    <Stack direction={"row"}>
+                                    <Stack direction={"row"} spacing={1}>
                                         <Link href={`/student/edit/${student.rfid}`} passHref>
                                             <Button variant='outlined'> Edit </Button>
                                         </Link>
