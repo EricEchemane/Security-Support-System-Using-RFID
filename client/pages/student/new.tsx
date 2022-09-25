@@ -5,7 +5,7 @@ import SocketConnectionStatus from 'components/shared/SocketConnectionStatus';
 import useLoadingIndicator from 'hooks/useLoadingIndicator';
 import socketConfig from 'lib/socketConfig';
 import Head from 'next/head';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import io, { Socket } from "socket.io-client";
 
 let socket: Socket | null;
