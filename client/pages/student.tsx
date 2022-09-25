@@ -15,6 +15,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import socketConfig from 'lib/socketConfig';
 import useLoadingIndicator from 'hooks/useLoadingIndicator';
+import useConfirmDialog from 'hooks/useConfirmDialog';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import HttpAdapter from 'http_adapters/http-adapter-interface';
+import useNotification from 'hooks/useNotification';
 
 const formatTime = (student: Student | undefined | null, time: "in" | "out") => {
     if (!student || !student.visitationRecords || student.visitationRecords.length === 0) return "none";
@@ -39,6 +43,13 @@ const getStudents = async () => {
 export default function StudentPage() {
     const [students, setStudents] = useState<Student[]>([]);
     const loadingIndicator = useLoadingIndicator();
+    const confirmDialog = useConfirmDialog();
+    const notify = useNotification();
+    const adapter = useHttpAdapter(new HttpAdapter('/student', 'DELETE'), {
+        onFailed: message => notify(message, 'error'),
+        onSuccess: () => notify('Deleted successfully', 'success')
+    });
+
     useEffect(() => {
         loadingIndicator.setVisibility(true);
         getStudents().then(data => {
@@ -47,6 +58,18 @@ export default function StudentPage() {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const confirmDelete = (rfid: string) => {
+        confirmDialog.confirm({
+            title: "Delete this student?",
+            message: "This action is irreversable. Once deleted, it cannot be undone.",
+            confirmText: "Delete anyway",
+            cancelText: "Cancel",
+            onConfirm() {
+                adapter.execute({ payload: { rfid } });
+            },
+        });
+    };
 
     return <>
         <Head> <title> Students </title> </Head>
@@ -100,7 +123,7 @@ export default function StudentPage() {
                                         <Link href={`/student/edit/${student.rfid}`} passHref>
                                             <Button variant='outlined'> Edit </Button>
                                         </Link>
-                                        <IconButton color="primary" aria-label="delete">
+                                        <IconButton color="primary" aria-label="delete" onClick={() => confirmDelete(student.rfid)}>
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>
                                     </Stack>

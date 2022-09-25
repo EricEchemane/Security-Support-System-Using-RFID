@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { Student } from 'types/student.model';
 import { useRouter } from 'next/router';
-import useLoadingIndicator from 'hooks/useLoadingIndicator';
 import useNotification from 'hooks/useNotification';
 import useForm from 'hooks/useForm';
 import { FormEvent, useState } from 'react';
@@ -41,7 +40,6 @@ export default function EditStudent(props: { data: Student; }) {
     useBackgroundRemoverHook();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const router = useRouter();
-    const loadingIndicator = useLoadingIndicator();
     const notify = useNotification();
     const { values, handleChange } = useForm(props.data);
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'PATCH'), {
@@ -59,9 +57,7 @@ export default function EditStudent(props: { data: Student; }) {
     const cancel = () => router.back();
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        loadingIndicator.setVisibility(true);
         await adapter.execute({ payload: values });
-        loadingIndicator.setVisibility(false);
     };
 
     return (

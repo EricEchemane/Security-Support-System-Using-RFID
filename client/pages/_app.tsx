@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LoadingIndicatorProvider } from 'hooks/useLoadingIndicator';
+import { ConfirmDialogProvider } from 'hooks/useConfirmDialog';
 
 const darkTheme = createTheme({
   palette: {
@@ -20,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CssBaseline />
       <NotificationProvider>
         <LoadingIndicatorProvider>
-          <Component {...pageProps} />
+          <ConfirmDialogProvider>
+            <Component {...pageProps} />
+          </ConfirmDialogProvider>
         </LoadingIndicatorProvider>
       </NotificationProvider>
     </ThemeProvider>
