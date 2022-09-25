@@ -97,7 +97,9 @@ export default function StudentPage() {
                                 <TableCell component="th" scope="row"> {formatTime(student, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
                                     <Stack direction={"row"}>
-                                        <Button variant='outlined'> Edit </Button>
+                                        <Link href={`/student/edit/${student.rfid}`} passHref>
+                                            <Button variant='outlined'> Edit </Button>
+                                        </Link>
                                         <IconButton color="primary" aria-label="delete">
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>
