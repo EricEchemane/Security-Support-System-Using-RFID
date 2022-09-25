@@ -46,7 +46,7 @@ export default function EditStudent(props: { data: Student; }) {
     const { values, handleChange } = useForm(props.data);
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'PATCH'), {
         onFailed: message => notify(message, 'error'),
-        onSuccess: () => notify('Successfully updated', 'success')
+        onSuccess: () => setModalIsOpen(true)
     });
 
     const [birthDate, setBirthDate] = useState<Dayjs | null>(dayjs(props.data.birthDate));
@@ -57,9 +57,11 @@ export default function EditStudent(props: { data: Student; }) {
     };
 
     const cancel = () => router.back();
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        adapter.execute({ payload: values });
+        loadingIndicator.setVisibility(true);
+        await adapter.execute({ payload: values });
+        loadingIndicator.setVisibility(false);
     };
 
     return (
@@ -191,8 +193,16 @@ export default function EditStudent(props: { data: Student; }) {
                             </GridItem>
                         </Grid>
                         <Stack justifyContent="flex-end" spacing={2} direction="row" my={4}>
-                            <Button size='large' variant='outlined' onClick={cancel}> Cancel </Button>
-                            <Button type='submit' size='large' variant='contained'> Save </Button>
+                            <Button
+                                disabled={adapter.loading}
+                                size='large'
+                                variant='outlined'
+                                onClick={cancel}> Cancel </Button>
+                            <Button
+                                disabled={adapter.loading}
+                                type='submit'
+                                size='large'
+                                variant='contained'> Save </Button>
                         </Stack>
                     </form>
                     <Modal
@@ -202,14 +212,15 @@ export default function EditStudent(props: { data: Student; }) {
                         aria-describedby="modal-modal-description"
                     >
                         <Box sx={style}>
-                            <Typography align='center' id="modal-modal-title" variant="h6" component="h2">
-                                RFID
-                            </Typography>
-                            <Typography align='center' id="modal-modal-description" sx={{ mt: 2 }}>
-                                Student successfully created success
+                            <Typography variant='h6' align='center' id="modal-modal-description" sx={{ mt: 2 }}>
+                                Student successfully udpated
                             </Typography>
                             <Stack spacing={2} mt={3} direction={"row"} justifyContent="stretch" width={"100%"}>
-                                <Button onClick={cancel} variant="outlined" fullWidth>Return Home</Button>
+                                <Button
+                                    onClick={cancel}
+                                    variant="contained"
+                                    color='success'
+                                    fullWidth> ok </Button>
                             </Stack>
                         </Box>
                     </Modal>
