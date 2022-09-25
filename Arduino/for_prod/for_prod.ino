@@ -37,7 +37,7 @@ void setup()
   searchWiFi();
   connectWiFi();
 
-  webSocket.begin(ip, 8080);
+  webSocket.begin(ip, 80);
 
   // init rfid
   SPI.begin();

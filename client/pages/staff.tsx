@@ -79,7 +79,7 @@ export default function StaffPage() {
     };
 
     return <>
-        <Head> <title> Staff </title> </Head>
+        <Head> <title> Staffs </title> </Head>
         <Stack alignItems={"flex-start"} p={3}>
             <Link href={"/staff/new"} passHref>
                 <Button variant='contained'> Add new staff </Button>
