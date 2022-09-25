@@ -18,7 +18,7 @@
 // const char* ip = "192.168.254.100";
 const char *ssid = "ZTE_2.4G_zncMNd";
 const char *pass = "iLyCfbAc";
-const char *ip = "sbca-server.herokuapp.com";
+const char *ip = "sbca-server.fly.dev";
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
@@ -37,7 +37,7 @@ void setup()
   searchWiFi();
   connectWiFi();
 
-  webSocket.begin(ip, 80);
+  webSocket.begin(ip, 8080);
 
   // init rfid
   SPI.begin();
