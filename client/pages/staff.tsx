@@ -91,7 +91,9 @@ export default function StaffPage() {
                                 <TableCell component="th" scope="row"> {formatTime(staff, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
                                     <Stack direction={"row"}>
-                                        <Button variant='outlined'> Edit </Button>
+                                        <Link href={`/staff/edit/${staff.rfid}`} passHref>
+                                            <Button variant='outlined'> Edit </Button>
+                                        </Link>
                                         <IconButton color="primary" aria-label="delete">
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>

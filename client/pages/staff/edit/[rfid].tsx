@@ -1,9 +1,9 @@
 import socketConfig from 'lib/socketConfig';
 import { GetServerSideProps } from 'next';
 import React from 'react';
-import { Student } from 'types/student.model';
+import { Staff } from 'types/staff.model';
 
-export default function EditStudent(props: { data: Student; }) {
+export default function EditStaff(props: { data: Staff; }) {
     console.log(props.data);
 
     return (
@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const rfid = params?.rfid;
     if (!rfid) return { notFound: true };
 
-    const res: any = await fetch(socketConfig.url + "/student/" + rfid);
+    const res: any = await fetch(socketConfig.url + "/staff/" + rfid);
     if (!res.ok) return { notFound: true };
     const data = await res.json();
 
