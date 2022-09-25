@@ -62,13 +62,13 @@ export default function EditStaff(props: { data: Staff; }) {
         event.preventDefault();
         await adapter.execute({ payload: values });
     };
-    const [teaching, setTeaching] = React.useState('Teaching');
+    const [teaching, setTeaching] = React.useState(props.data.typeOfStaff);
     const handleTeachingChange = (event: SelectChangeEvent) => {
         setTeaching(event.target.value as string);
         values.typeOfStaff = event.target.value;
     };
 
-    const [department, setDepartment] = React.useState('');
+    const [department, setDepartment] = React.useState(props.data.department);
     const handleDepartmentChange = (event: SelectChangeEvent) => {
         setDepartment(event.target.value as string);
         values.department = event.target.value;
