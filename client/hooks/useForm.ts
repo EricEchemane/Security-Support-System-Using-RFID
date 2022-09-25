@@ -29,5 +29,5 @@ export default function useForm(
         setValues(values => ({ ...values, [name]: value }));
     };
 
-    return { values, handleChange, validate, errors };
+    return { values, handleChange, validate, errors, setValues };
 }

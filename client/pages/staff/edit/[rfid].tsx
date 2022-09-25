@@ -1,6 +1,4 @@
-import socketConfig from 'lib/socketConfig';
-import { GetServerSideProps } from 'next';
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
@@ -14,7 +12,6 @@ import HttpAdapter from 'http_adapters/http-adapter-interface';
 import useNotification from 'hooks/useNotification';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Staff } from 'types/staff.model';
 import useBackgroundRemoverHook from 'hooks/useBackgroundRemoverHook';
 import Head from 'next/head';
 
@@ -36,15 +33,15 @@ const style = {
     p: 4,
 };
 
-export default function EditStaff(props: { data: Staff; }) {
+export default function EditStaff() {
     useBackgroundRemoverHook();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const router = useRouter();
     const notify = useNotification();
-    const { values, handleChange } = useForm(props.data);
-    const [birthDate, setBirthDate] = React.useState<Dayjs | null>(dayjs(props.data.birthDate));
+    const { values, handleChange, setValues } = useForm({ "": "" });
+    const [birthDate, setBirthDate] = React.useState<Dayjs | null>(dayjs(values.birthDate));
 
     const handleBirthDateChange = (newValue: Dayjs | null) => {
         setBirthDate(newValue);
@@ -62,13 +59,27 @@ export default function EditStaff(props: { data: Staff; }) {
         event.preventDefault();
         await adapter.execute({ payload: values });
     };
-    const [teaching, setTeaching] = React.useState(props.data.typeOfStaff);
+    const [teaching, setTeaching] = React.useState("");
+    const [department, setDepartment] = React.useState("");
+
+    useEffect(() => {
+        const valuesFromSession = sessionStorage.getItem('edit');
+        if (!valuesFromSession) {
+            router.back();
+            return;
+        }
+        const parsedValues = JSON.parse(valuesFromSession);
+        setValues(parsedValues);
+        setTeaching(parsedValues.typeOfStaff);
+        setDepartment(parsedValues.department);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleTeachingChange = (event: SelectChangeEvent) => {
         setTeaching(event.target.value as string);
         values.typeOfStaff = event.target.value;
     };
 
-    const [department, setDepartment] = React.useState(props.data.department);
     const handleDepartmentChange = (event: SelectChangeEvent) => {
         setDepartment(event.target.value as string);
         values.department = event.target.value;
@@ -78,7 +89,7 @@ export default function EditStaff(props: { data: Staff; }) {
         <Container>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <form style={{ marginTop: '2rem', width: '100%' }} onSubmit={handleSubmit}>
-                    <Typography variant='h6' mb={2}> Please fill up the form carefully </Typography>
+                    <Typography variant='h6' mb={2}> Update staff information carefully </Typography>
                     <Grid container width="100%">
                         <GridItem>
                             <TextField
@@ -233,17 +244,3 @@ export default function EditStaff(props: { data: Staff; }) {
         </Container>
     </>;
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const { params } = ctx;
-    const rfid = params?.rfid;
-    if (!rfid) return { notFound: true };
-
-    const res: any = await fetch(socketConfig.url + "/staff/" + rfid);
-    if (!res.ok) return { notFound: true };
-    const data = await res.json();
-
-    return {
-        props: { data: JSON.parse(JSON.stringify(data.data)) }
-    };
-};

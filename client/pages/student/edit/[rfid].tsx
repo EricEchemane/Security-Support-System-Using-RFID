@@ -1,5 +1,3 @@
-import socketConfig from 'lib/socketConfig';
-import { GetServerSideProps } from 'next';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,11 +5,10 @@ import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Student } from 'types/student.model';
 import { useRouter } from 'next/router';
 import useNotification from 'hooks/useNotification';
 import useForm from 'hooks/useForm';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Head from 'next/head';
 import useBackgroundRemoverHook from 'hooks/useBackgroundRemoverHook';
@@ -36,18 +33,28 @@ const style = {
     p: 4,
 };
 
-export default function EditStudent(props: { data: Student; }) {
+export default function EditStudent() {
     useBackgroundRemoverHook();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const router = useRouter();
     const notify = useNotification();
-    const { values, handleChange } = useForm(props.data);
+    const { values, handleChange, setValues } = useForm({ "": "" });
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'PATCH'), {
         onFailed: message => notify(message, 'error'),
         onSuccess: () => setModalIsOpen(true)
     });
 
-    const [birthDate, setBirthDate] = useState<Dayjs | null>(dayjs(props.data.birthDate));
+    useEffect(() => {
+        const valuesFromSession = sessionStorage.getItem('edit');
+        if (!valuesFromSession) {
+            router.back();
+            return;
+        }
+        setValues(JSON.parse(valuesFromSession));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setValues]);
+
+    const [birthDate, setBirthDate] = useState<Dayjs | null>(dayjs(values.birthDate));
 
     const handleBirthDateChange = (newValue: Dayjs | null) => {
         setBirthDate(newValue);
@@ -225,17 +232,3 @@ export default function EditStudent(props: { data: Student; }) {
         </>
     );
 }
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const { params } = ctx;
-    const rfid = params?.rfid;
-    if (!rfid) return { notFound: true };
-
-    const res: any = await fetch(socketConfig.url + "/student/" + rfid);
-    if (!res.ok) return { notFound: true };
-    const data = await res.json();
-
-    return {
-        props: { data: JSON.parse(JSON.stringify(data.data)) }
-    };
-};

@@ -78,6 +78,10 @@ export default function StudentPage() {
             },
         });
     };
+    const edit = (student: Student) => {
+        sessionStorage.setItem("edit", JSON.stringify(student));
+        router.push(`/student/edit/${student.rfid}`);
+    };
 
     return <>
         <Head> <title> Students </title> </Head>
@@ -128,9 +132,9 @@ export default function StudentPage() {
                                 <TableCell component="th" scope="row"> {formatTime(student, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
                                     <Stack direction={"row"} spacing={1}>
-                                        <Link href={`/student/edit/${student.rfid}`} passHref>
-                                            <Button variant='outlined'> Edit </Button>
-                                        </Link>
+                                        <Button
+                                            onClick={() => edit(student)}
+                                            variant='outlined'> Edit </Button>
                                         <IconButton color="primary" aria-label="delete" onClick={() => confirmDelete(student.rfid)}>
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>

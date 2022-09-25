@@ -77,6 +77,10 @@ export default function StaffPage() {
             },
         });
     };
+    const edit = (staff: Staff) => {
+        sessionStorage.setItem("edit", JSON.stringify(staff));
+        router.push(`/staff/edit/${staff.rfid}`);
+    };
 
     return <>
         <Head> <title> Staffs </title> </Head>
@@ -122,9 +126,9 @@ export default function StaffPage() {
                                 <TableCell component="th" scope="row"> {formatTime(staff, "out")} </TableCell>
                                 <TableCell component="th" scope="row">
                                     <Stack direction={"row"} spacing={1}>
-                                        <Link href={`/staff/edit/${staff.rfid}`} passHref>
-                                            <Button variant='outlined'> Edit </Button>
-                                        </Link>
+                                        <Button
+                                            onClick={() => edit(staff)}
+                                            variant='outlined'> Edit </Button>
                                         <IconButton
                                             onClick={() => confirmDelete(staff.rfid)}
                                             color="primary"
