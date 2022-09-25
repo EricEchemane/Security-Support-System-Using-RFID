@@ -19,6 +19,7 @@ import useConfirmDialog from 'hooks/useConfirmDialog';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
 import useNotification from 'hooks/useNotification';
+import { useRouter } from 'next/router';
 
 const formatTime = (student: Student | undefined | null, time: "in" | "out") => {
     if (!student || !student.visitationRecords || student.visitationRecords.length === 0) return "none";
@@ -45,12 +46,19 @@ export default function StudentPage() {
     const loadingIndicator = useLoadingIndicator();
     const confirmDialog = useConfirmDialog();
     const notify = useNotification();
+    const router = useRouter();
     const adapter = useHttpAdapter(new HttpAdapter('/student', 'DELETE'), {
         onFailed: message => notify(message, 'error'),
         onSuccess: () => notify('Deleted successfully', 'success')
     });
 
     useEffect(() => {
+        const sessionKey = "sbca-admin";
+        if (!sessionStorage.getItem(sessionKey)) {
+            router.replace('/');
+            return;
+        }
+
         loadingIndicator.setVisibility(true);
         getStudents().then(data => {
             setStudents(data);
