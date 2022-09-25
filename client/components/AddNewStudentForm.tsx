@@ -11,10 +11,9 @@ import { useRouter } from 'next/router';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import HttpAdapter from 'http_adapters/http-adapter-interface';
 import useNotification from 'hooks/useNotification';
-
 import Box from '@mui/material/Box';
-
 import Modal from '@mui/material/Modal';
+
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
