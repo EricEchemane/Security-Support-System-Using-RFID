@@ -47,9 +47,14 @@ export default function TimeOut() {
 
         <Head> <title> Time-out </title> </Head>
         <Container >
-            <Stack spacing={3} alignItems="flex-end" mt={3}>
-                <SocketConnectionStatus connected={connected} />
-                <Typography variant='h4'> Time-out: {formatTime(entity)} </Typography>
+            <Stack spacing={3} direction='row' alignItems={'flex-end'} justifyContent={'space-between'} mt={3}>
+                {entity && <Typography variant='h3'>
+                    {entity.firstName} {entity.middleName} {entity.lastName} {entity.nameExtension}
+                </Typography>}
+                <Stack spacing={3} alignItems="flex-end">
+                    <SocketConnectionStatus connected={connected} />
+                    <Typography variant='h4'> Time-out: {formatTime(entity)} </Typography>
+                </Stack>
             </Stack>
             {entity && <Stack my={5}>
                 <Stack
@@ -69,19 +74,29 @@ export default function TimeOut() {
                             width={150}
                             height={150} />
                     </Paper>
-                    <Stack>
-                        <Typography variant='h3'>
-                            {entity.firstName} {entity.middleName} {entity.lastName} {entity.nameExtension}
-                        </Typography>
-                        <Typography variant='button'>Email:{entity.email}</Typography>
-                        <Typography variant='button'>Birthday:{entity.birthDate}</Typography>
-                        <Typography variant='button'>RFID:{entity.rfid}</Typography>
-                        <Typography variant='button'>Mobile Number:{entity.mobileNumber}</Typography>
-                        {(entity as any).section && <Typography variant='button'>Section:{(entity as any).section}</Typography>}
-                        <Typography variant='button'>Department:{entity.department}</Typography>
-                        {(entity as any).yearLevel && <Typography variant='button'>Year Level:{(entity as any).yearLevel}</Typography>}
-                        {(entity as any).strand && <Typography variant='button'>Strand:{(entity as any).strand}</Typography>}
-                        {(entity as any).course && <Typography variant='button'>Course:{(entity as any).course}</Typography>}
+                    <Stack spacing={2} direction='row'>
+                        <Stack spacing={2}>
+                            <Typography > Email: </Typography>
+                            <Typography > Birthday: </Typography>
+                            <Typography > RFID: </Typography>
+                            <Typography > Mobile Number: </Typography>
+                            {(entity as any).section && <Typography > Section: </Typography>}
+                            <Typography >Department: </Typography>
+                            {(entity as any).yearLevel && <Typography >Year Level: </Typography>}
+                            {(entity as any).strand && <Typography >Strand: </Typography>}
+                            {(entity as any).course && <Typography >Course: </Typography>}
+                        </Stack>
+                        <Stack spacing={2}>
+                            <Typography > {entity.email} </Typography>
+                            <Typography > {entity.birthDate} </Typography>
+                            <Typography > {entity.rfid} </Typography>
+                            <Typography > {entity.mobileNumber} </Typography>
+                            {(entity as any).section && <Typography > {(entity as any).section}</Typography>}
+                            <Typography > {entity.department}</Typography>
+                            {(entity as any).yearLevel && <Typography >{(entity as any).yearLevel}</Typography>}
+                            {(entity as any).strand && <Typography >{(entity as any).strand}</Typography>}
+                            {(entity as any).course && <Typography >{(entity as any).course}</Typography>}
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>}
