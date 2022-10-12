@@ -106,7 +106,7 @@ export default function TimeIn() {
         </Container>
 
         <Stack
-            px={5} pb={2}
+            pb={2}
             direction={'row'}
             justifyContent='center'
             width={'100%'}> <Footer /> </Stack>

@@ -4,6 +4,7 @@ import { Stack, Typography } from '@mui/material';
 export default function Footer() {
     return (
         <Stack
+            px={5}
             mt={7}
             direction="row"
             justifyContent="center"
