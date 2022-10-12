@@ -68,7 +68,7 @@ export default function NewStaff() {
     return <>
         <Head> <title> Add new staff </title> </Head>
         <Container>
-            <Stack spacing={3} alignItems="flex-start" mt={3}>
+            <Stack spacing={3} alignItems="flex-start" my={3}>
                 <SocketConnectionStatus connected={connected} />
                 <Stack
                     justifyContent='space-between'
