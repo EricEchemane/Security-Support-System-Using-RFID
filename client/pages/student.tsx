@@ -107,7 +107,7 @@ export default function StudentPage() {
                             <TableCell> Course </TableCell>
                             <TableCell> Last Time in </TableCell>
                             <TableCell> Last Time Out </TableCell>
-                            {/* <TableCell> Action </TableCell> */}
+                            <TableCell> Actions </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -130,7 +130,7 @@ export default function StudentPage() {
                                 <TableCell component="th" scope="row"> {student.course} </TableCell>
                                 <TableCell component="th" scope="row"> {formatTime(student, "in")} </TableCell>
                                 <TableCell component="th" scope="row"> {formatTime(student, "out")} </TableCell>
-                                {/* <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row">
                                     <Stack direction={"row"} spacing={1}>
                                         <Button
                                             onClick={() => edit(student)}
@@ -139,7 +139,7 @@ export default function StudentPage() {
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>
                                     </Stack>
-                                </TableCell> */}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

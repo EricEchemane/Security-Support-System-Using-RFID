@@ -16,9 +16,9 @@
 // const char* ssid = "AN5506-04-FA_91b28";
 // const char* pass = "32d6e4d7";
 // const char* ip = "192.168.254.100";
-const char *ssid = "ZTE_2.4G_zncMNd";
-const char *pass = "iLyCfbAc";
-const char *ip = "sbca-server.fly.dev";
+const char *ssid = "Chika";
+const char *pass = "maeganda";
+const char *ip = "sbca-server.herokuapp.com";
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
