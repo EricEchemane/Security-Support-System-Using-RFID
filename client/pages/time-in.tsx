@@ -49,7 +49,7 @@ export default function TimeIn() {
         <Head> <title> Time-in </title> </Head>
         <Container >
             <Stack direction={'row'} my={4} alignItems='flex-end' justifyContent='space-between'>
-                {entity && <Typography variant='h3'>
+                {entity && <Typography variant='h3' className={(entity as any).yearLevel ? 'student' : 'staff'}>
                     {toTitleCase(`${entity.firstName} ${entity.middleName} ${entity.lastName} ${entity.nameExtension}`)}
                 </Typography>}
                 <Stack spacing={3} alignItems="flex-end">
@@ -83,7 +83,6 @@ export default function TimeIn() {
                                 <Typography >RFID: </Typography>
                                 <Typography >Mobile Number: </Typography>
                                 {(entity as any).section && <Typography >Section: </Typography>}
-                                {/* {(entity as any).typeOfStaff && <Typography >Type of Staff: </Typography>} */}
                                 <Typography >Department: </Typography>
                                 {(entity as any).yearLevel && <Typography >Year Level: </Typography>}
                                 {(entity as any).strand && <Typography >Strand: </Typography>}
@@ -95,7 +94,6 @@ export default function TimeIn() {
                                 <Typography > {entity.rfid}</Typography>
                                 <Typography > {entity.mobileNumber}</Typography>
                                 {(entity as any).section && <Typography > {(entity as any).section}</Typography>}
-                                {/* {(entity as any).typeOfStaff && <Typography > {(entity as any).typeOfStaff}</Typography>} */}
                                 <Typography > {entity.department}</Typography>
                                 {(entity as any).yearLevel && <Typography > {(entity as any).yearLevel}</Typography>}
                                 {(entity as any).strand && <Typography > {(entity as any).strand}</Typography>}

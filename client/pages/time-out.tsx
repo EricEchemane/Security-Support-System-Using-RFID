@@ -48,7 +48,7 @@ export default function TimeOut() {
         <Head> <title> Time-out </title> </Head>
         <Container >
             <Stack spacing={3} direction='row' alignItems={'flex-end'} justifyContent={'space-between'} mt={3}>
-                {entity && <Typography variant='h3'>
+                {entity && <Typography variant='h3' className={(entity as any).yearLevel ? 'student' : 'staff'}>
                     {entity.firstName} {entity.middleName} {entity.lastName} {entity.nameExtension}
                 </Typography>}
                 <Stack spacing={3} alignItems="flex-end">
