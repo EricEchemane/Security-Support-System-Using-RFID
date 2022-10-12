@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import useLoadingIndicator from "hooks/useLoadingIndicator";
 import useNotification from "hooks/useNotification";
 import socketConfig from "lib/socketConfig";
+import { toTitleCase } from "lib/utillity-functions";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
@@ -47,45 +48,62 @@ export default function TimeIn() {
 
         <Head> <title> Time-in </title> </Head>
         <Container >
-            <Stack spacing={3} alignItems="flex-end" mt={3}>
-                <SocketConnectionStatus connected={connected} />
-                <Typography variant='h4'> Time-in: {formatTime(entity)} </Typography>
-            </Stack>
-            {entity && <Stack my={5}>
-                <Stack
-                    width='100%'
-                    spacing={5}
-                    direction='row'>
-                    <Paper
-                        elevation={4}
-                        style={{ overflow: 'hidden', width: '280px', height: '280px' }}>
-                        <img
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                            }}
-                            src={entity.photo}
-                            alt='photo url'
-                            width={150}
-                            height={150} />
-                    </Paper>
-                    <Stack>
-                        <Typography variant='h3'>
-                            {entity.firstName} {entity.middleName} {entity.lastName} {entity.nameExtension}
-                        </Typography>
-                        <Typography variant='button'>Email:{entity.email}</Typography>
-                        <Typography variant='button'>Birthday:{entity.birthDate}</Typography>
-                        <Typography variant='button'>RFID:{entity.rfid}</Typography>
-                        <Typography variant='button'>Mobile Number:{entity.mobileNumber}</Typography>
-                        {(entity as any).section && <Typography variant='button'>Section:{(entity as any).section}</Typography>}
-                        {(entity as any).typeOfStaff && <Typography variant='button'>Type of Staff: {(entity as any).typeOfStaff}</Typography>}
-                        <Typography variant='button'>Department: {entity.department}</Typography>
-                        {(entity as any).yearLevel && <Typography variant='button'>Year Level:{(entity as any).yearLevel}</Typography>}
-                        {(entity as any).strand && <Typography variant='button'>Strand:{(entity as any).strand}</Typography>}
-                        {(entity as any).course && <Typography variant='button'>Course:{(entity as any).course}</Typography>}
-                    </Stack>
+            <Stack direction={'row'} my={4} alignItems='flex-end' justifyContent='space-between'>
+                {entity && <Typography variant='h3'>
+                    {toTitleCase(`${entity.firstName} ${entity.middleName} ${entity.lastName} ${entity.nameExtension}`)}
+                </Typography>}
+                <Stack spacing={3} alignItems="flex-end">
+                    <SocketConnectionStatus connected={connected} />
+                    <Typography variant='h4'> Time-in: {formatTime(entity)} </Typography>
                 </Stack>
-            </Stack>}
+            </Stack>
+            {entity &&
+                <Stack mb={5}>
+                    <Stack
+                        width='100%'
+                        spacing={5}
+                        direction='row'>
+                        <Paper
+                            elevation={4}
+                            style={{ overflow: 'hidden', width: '280px', height: '280px' }}>
+                            <img
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    objectFit: "cover"
+                                }}
+                                src={entity.photo}
+                                alt='photo url' />
+                        </Paper>
+
+                        <Stack spacing={2} direction='row'>
+                            <Stack spacing={2} alignItems='flex-end'>
+                                <Typography >Email: </Typography>
+                                <Typography >Birthday: </Typography>
+                                <Typography >RFID: </Typography>
+                                <Typography >Mobile Number: </Typography>
+                                {(entity as any).section && <Typography >Section: </Typography>}
+                                {/* {(entity as any).typeOfStaff && <Typography >Type of Staff: </Typography>} */}
+                                <Typography >Department: </Typography>
+                                {(entity as any).yearLevel && <Typography >Year Level: </Typography>}
+                                {(entity as any).strand && <Typography >Strand: </Typography>}
+                                {(entity as any).course && <Typography >Course: </Typography>}
+                            </Stack>
+                            <Stack spacing={2}>
+                                <Typography > {entity.email} </Typography>
+                                <Typography > {entity.birthDate}</Typography>
+                                <Typography > {entity.rfid}</Typography>
+                                <Typography > {entity.mobileNumber}</Typography>
+                                {(entity as any).section && <Typography > {(entity as any).section}</Typography>}
+                                {/* {(entity as any).typeOfStaff && <Typography > {(entity as any).typeOfStaff}</Typography>} */}
+                                <Typography > {entity.department}</Typography>
+                                {(entity as any).yearLevel && <Typography > {(entity as any).yearLevel}</Typography>}
+                                {(entity as any).strand && <Typography > {(entity as any).strand}</Typography>}
+                                {(entity as any).course && <Typography > {(entity as any).course}</Typography>}
+                            </Stack>
+                        </Stack>
+                    </Stack>
+                </Stack>}
         </Container>
     </>;
 }
