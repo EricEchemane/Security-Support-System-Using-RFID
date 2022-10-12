@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Email, Phone, Language, LocationOn } from '@mui/icons-material';
 import { Button, Container, Stack, Typography } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import sbcaLogo from "../public/assets/logo.png";
 
 export default function HomePage() {
     const router = useRouter();
@@ -14,10 +16,12 @@ export default function HomePage() {
                         fontWeight="bold"
                         align='center'
                         variant='h2'> WELCOME TO </Typography>
-                    <Typography
-                        mt={4}
-                        align='center'
-                        variant='h4'> ST. BERNADETTE COLLEGE OF ALABANG </Typography>
+                    <Stack spacing={1} direction={'row'} justifyContent='center' alignItems='center'>
+                        <Image alt="sbca logo" src={sbcaLogo} width={75} height={75} />
+                        <Typography
+                            align='center'
+                            variant='h4'> ST. BERNADETTE COLLEGE OF ALABANG </Typography>
+                    </Stack>
                     <Stack
                         direction="row"
                         alignItems="center"
