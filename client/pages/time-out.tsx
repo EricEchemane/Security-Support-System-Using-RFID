@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Container, Paper, Stack, Typography } from "@mui/material";
+import Footer from "components/Footer";
 import SocketConnectionStatus from "components/shared/SocketConnectionStatus";
 import dayjs from "dayjs";
 import useLoadingIndicator from "hooks/useLoadingIndicator";
@@ -101,5 +102,10 @@ export default function TimeOut() {
                 </Stack>
             </Stack>}
         </Container>
+        <Stack
+            px={5} pb={2}
+            direction={'row'}
+            justifyContent='center'
+            width={'100%'}> <Footer /> </Stack>
     </>;
 }
