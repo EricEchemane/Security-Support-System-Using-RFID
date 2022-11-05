@@ -1,12 +1,30 @@
+import HttpAdapter from 'http_adapters/http-adapter-interface';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import React, { FormEvent, useState } from 'react';
 
 export default function Guest() {
-    const onSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        console.log('submit');
-    };
     const [name, setName] = useState('');
     const [purpose, setPurpose] = useState('');
+    const [loading, setLoading] = useState(false);
+    const adapter = useHttpAdapter(new HttpAdapter('/guest', 'POST'), {
+        onFailed(message: string) {
+            setLoading(false);
+            alert(message);
+        },
+        onSuccess: () => {
+            setLoading(false);
+            alert('Success!');
+            setName('');
+            setPurpose('');
+        }
+    });
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        adapter.execute({
+            payload: { fullName: name, purposeOfVisit: purpose },
+        });
+    };
 
     return (
         <form onSubmit={onSubmit}>
