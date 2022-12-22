@@ -1,3 +1,14 @@
+import {
+	Stack,
+	TableContainer,
+	Paper,
+	Table,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableBody,
+	Typography,
+} from '@mui/material';
 import useLoadingIndicator from 'hooks/useLoadingIndicator';
 import socketConfig from 'lib/socketConfig';
 import Head from 'next/head';
@@ -40,6 +51,59 @@ export default function AllGuests() {
 			<Head>
 				<title> All Guests </title>
 			</Head>
+
+			<Typography
+				variant='h3'
+				p={2}
+				mt={2}
+			>
+				All Guests
+			</Typography>
+
+			<Stack p={2}>
+				<TableContainer component={Paper}>
+					<Table
+						sx={{ minWidth: 650 }}
+						aria-label='simple table'
+					>
+						<TableHead>
+							<TableRow>
+								<TableCell> FULL NAME </TableCell>
+								<TableCell> PURPOSE OF VISIT </TableCell>
+								<TableCell> TIME AND DATE OF VISIT </TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{guests.map((guest, idx) => (
+								<TableRow
+									key={idx}
+									sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+								>
+									<TableCell
+										component='th'
+										scope='row'
+									>
+										{guest.fullName}
+									</TableCell>
+									<TableCell
+										component='th'
+										scope='row'
+									>
+										{guest.purposeOfVisit}
+									</TableCell>
+									<TableCell
+										component='th'
+										scope='row'
+									>
+										{new Date(guest.timeIn).toDateString()} {' - '}
+										{new Date(guest.timeIn).toLocaleTimeString()}
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Stack>
 		</>
 	);
 }
